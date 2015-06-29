@@ -1,0 +1,31 @@
+<h1>Listing contract_forms</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Contract</th>
+      <th>Name</th>
+      <th>Link</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @contract_forms.each do |contract_form| %>
+      <tr>
+        <td><%= contract_form.contract %></td>
+        <td><%= contract_form.name %></td>
+        <td><%= contract_form.link %></td>
+        <td><%= link_to 'Show', contract_form %></td>
+        <td><%= link_to 'Edit', edit_contract_form_path(contract_form) %></td>
+        <td><%= link_to 'Destroy', contract_form, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Contract form', new_contract_form_path %>

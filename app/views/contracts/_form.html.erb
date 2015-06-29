@@ -1,0 +1,93 @@
+<%= form_for(@contract) do |f| %>
+  <% if @contract.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@contract.errors.count, "error") %> prohibited this contract from being saved:</h2>
+
+      <ul>
+      <% @contract.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :origin_id %><br>
+    <%= f.text_field :origin_id %>
+  </div>
+  <div class="field">
+    <%= f.label :entity_id %><br>
+    <%= f.text_field :entity_id %>
+  </div>
+  <div class="field">
+    <%= f.label :mode_id %><br>
+    <%= f.text_field :mode_id %>
+  </div>
+  <div class="field">
+    <%= f.label :control_number %><br>
+    <%= f.text_field :control_number %>
+  </div>
+  <div class="field">
+    <%= f.label :publication_number %><br>
+    <%= f.number_field :publication_number %>
+  </div>
+  <div class="field">
+    <%= f.label :description %><br>
+    <%= f.text_field :description %>
+  </div>
+  <div class="field">
+    <%= f.label :status_id %><br>
+    <%= f.text_field :status_id %>
+  </div>
+  <div class="field">
+    <%= f.label :contracted_amount_cents %><br>
+    <%= f.number_field :contracted_amount_cents %>
+  </div>
+  <div class="field">
+    <%= f.label :contracted_amount_currency %><br>
+    <%= f.text_field :contracted_amount_currency %>
+  </div>
+  <div class="field">
+    <%= f.label :publication_date %><br>
+    <%= f.date_select :publication_date %>
+  </div>
+  <div class="field">
+    <%= f.label :presentation_date %><br>
+    <%= f.date_select :presentation_date %>
+  </div>
+  <div class="field">
+    <%= f.label :contact %><br>
+    <%= f.text_field :contact %>
+  </div>
+  <div class="field">
+    <%= f.label :warranty %><br>
+    <%= f.text_field :warranty %>
+  </div>
+  <div class="field">
+    <%= f.label :specification_price %><br>
+    <%= f.text_field :specification_price %>
+  </div>
+  <div class="field">
+    <%= f.label :aclaration_date %><br>
+    <%= f.datetime_select :aclaration_date %>
+  </div>
+  <div class="field">
+    <%= f.label :granted_date %><br>
+    <%= f.date_select :granted_date %>
+  </div>
+  <div class="field">
+    <%= f.label :abandonment_date %><br>
+    <%= f.date_select :abandonment_date %>
+  </div>
+  <div class="field">
+    <%= f.label :region_id %><br>
+    <%= f.text_field :region_id %>
+  </div>
+  <div class="field">
+    <%= f.label :regulation_id %><br>
+    <%= f.text_field :regulation_id %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

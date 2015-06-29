@@ -1,0 +1,31 @@
+<h1>Listing contract_documents</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Contract</th>
+      <th>Name</th>
+      <th>Link</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @contract_documents.each do |contract_document| %>
+      <tr>
+        <td><%= contract_document.contract %></td>
+        <td><%= contract_document.name %></td>
+        <td><%= contract_document.link %></td>
+        <td><%= link_to 'Show', contract_document %></td>
+        <td><%= link_to 'Edit', edit_contract_document_path(contract_document) %></td>
+        <td><%= link_to 'Destroy', contract_document, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Contract document', new_contract_document_path %>

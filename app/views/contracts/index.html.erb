@@ -1,0 +1,63 @@
+<h1>Listing contracts</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Origin</th>
+      <th>Entity</th>
+      <th>Mode</th>
+      <th>Control number</th>
+      <th>Publication number</th>
+      <th>Description</th>
+      <th>Status</th>
+      <th>Contracted amount cents</th>
+      <th>Contracted amount currency</th>
+      <th>Publication date</th>
+      <th>Presentation date</th>
+      <th>Contact</th>
+      <th>Warranty</th>
+      <th>Specification price</th>
+      <th>Aclaration date</th>
+      <th>Granted date</th>
+      <th>Abandonment date</th>
+      <th>Region</th>
+      <th>Regulation</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @contracts.each do |contract| %>
+      <tr>
+        <td><%= contract.origin_id %></td>
+        <td><%= contract.entity.name %></td>
+        <td><%= contract.mode.origin_code %></td>
+        <td><%= contract.control_number %></td>
+        <td><%= contract.publication_number %></td>
+        <td><%= contract.description %></td>
+        <td><%= contract.status.name %></td>
+        <td><%= contract.contracted_amount_cents %></td>
+        <td><%= contract.contracted_amount_currency %></td>
+        <td><%= contract.publication_date %></td>
+        <td><%= contract.presentation_date %></td>
+        <td><%= contract.contact %></td>
+        <td><%= contract.warranty %></td>
+        <td><%= contract.specification_price %></td>
+        <td><%= contract.aclaration_date %></td>
+        <td><%= contract.granted_date %></td>
+        <td><%= contract.abandonment_date %></td>
+        <td><%= contract.region.name %></td>
+        <td><%= contract.regulation.origin_code %></td>
+        <td><%= link_to 'Show', contract %></td>
+        <td><%= link_to 'Edit', edit_contract_path(contract) %></td>
+        <td><%= link_to 'Destroy', contract, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Contract', new_contract_path %>

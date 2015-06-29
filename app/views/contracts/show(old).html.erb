@@ -1,0 +1,99 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Origin:</strong>
+  <%= @contract.origin_id %>
+</p>
+
+<p>
+  <strong>Entity:</strong>
+  <%= @contract.entity %>
+</p>
+
+<p>
+  <strong>Mode:</strong>
+  <%= @contract.mode %>
+</p>
+
+<p>
+  <strong>Control number:</strong>
+  <%= @contract.control_number %>
+</p>
+
+<p>
+  <strong>Publication number:</strong>
+  <%= @contract.publication_number %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @contract.description %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @contract.status %>
+</p>
+
+<p>
+  <strong>Contracted amount cents:</strong>
+  <%= @contract.contracted_amount_cents %>
+</p>
+
+<p>
+  <strong>Contracted amount currency:</strong>
+  <%= @contract.contracted_amount_currency %>
+</p>
+
+<p>
+  <strong>Publication date:</strong>
+  <%= @contract.publication_date %>
+</p>
+
+<p>
+  <strong>Presentation date:</strong>
+  <%= @contract.presentation_date %>
+</p>
+
+<p>
+  <strong>Contact:</strong>
+  <%= @contract.contact %>
+</p>
+
+<p>
+  <strong>Warranty:</strong>
+  <%= @contract.warranty %>
+</p>
+
+<p>
+  <strong>Specification price:</strong>
+  <%= @contract.specification_price %>
+</p>
+
+<p>
+  <strong>Aclaration date:</strong>
+  <%= @contract.aclaration_date %>
+</p>
+
+<p>
+  <strong>Granted date:</strong>
+  <%= @contract.granted_date %>
+</p>
+
+<p>
+  <strong>Abandonment date:</strong>
+  <%= @contract.abandonment_date %>
+</p>
+
+<p>
+  <strong>Region:</strong>
+  <%= @contract.region %>
+</p>
+
+<p>
+  <strong>Regulation:</strong>
+  <%= @contract.regulation %>
+</p>
+
+<%= link_to 'Edit', edit_contract_path(@contract) %> |
+<%= link_to 'Back', contracts_path %>

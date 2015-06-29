@@ -1,0 +1,43 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  origin_id: MyString
+  entity_id: 
+  mode_id: 
+  control_number: MyString
+  publication_number: 1
+  description: MyString
+  status_id: 
+  contracted_amount_cents: 1
+  contracted_amount_currency: MyString
+  publication_date: 2015-04-14
+  presentation_date: 2015-04-14
+  contact: MyString
+  warranty: MyString
+  specification_price: MyString
+  aclaration_date: 2015-04-14 16:20:32
+  granted_date: 2015-04-14
+  abandonment_date: 2015-04-14
+  region_id: 
+  regulation_id: 
+
+two:
+  origin_id: MyString
+  entity_id: 
+  mode_id: 
+  control_number: MyString
+  publication_number: 1
+  description: MyString
+  status_id: 
+  contracted_amount_cents: 1
+  contracted_amount_currency: MyString
+  publication_date: 2015-04-14
+  presentation_date: 2015-04-14
+  contact: MyString
+  warranty: MyString
+  specification_price: MyString
+  aclaration_date: 2015-04-14 16:20:32
+  granted_date: 2015-04-14
+  abandonment_date: 2015-04-14
+  region_id: 
+  regulation_id: 
