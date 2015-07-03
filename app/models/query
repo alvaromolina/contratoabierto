@@ -1,0 +1,7 @@
+select c.*, 
+(select name from entities where id = c.entity_id) entity_name,
+(select origin_code from modes where id = c.mode_id) mode_name,
+(select name from regions where id = c.region_id) region_name,
+(select origin_code from regulations where id = c.regulation_id) regulation_name,
+(select name from statuses where id = c.status_id) status_name
+from contracts c;
