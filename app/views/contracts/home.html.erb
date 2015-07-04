@@ -81,7 +81,7 @@
 					-->
 				</div>
 			</div>
-			<form class="form-inline">
+			<form class="form-inline" action="/">
 
 			<div class="row">
 				<div class="col-lg-12">
@@ -89,15 +89,12 @@
 						    <input type="text" size="35" class="form-control input-lg" id="objeto" placeholder="Objeto Contrato">
 					  </div>
 					  <div class="form-group">
-					    <input type="text" size="35" class="form-control input-lg" id="entidad" placeholder="Entidad">
+					  	<%= autocomplete_field_tag 'entity', '', autocomplete_entity_name_contracts_path, {:class=> "form-control input-lg", :size => 35, :placeholder => "Entidad", :id => "entidad", 'data-auto-focus' => true} %>
 					  </div>
 					  <div class="form-group">
-					    <select class="form-control input-lg">
-							  <option>Todos los departamentos</option>
-							  <option>Cochabamba</option>
-							  <option>La Paz</option>
-							  <option>Santa Cruz</option>
-						</select>
+							<%=  
+					    	collection_select(:region, :id, Region.all, :id, :name, {:include_blank => 'TODOS'}, {:class=> "form-control input-lg"})
+					    	%>
 					  </div>
 					  <button type="submit" class="btn btn-lg btn-theme btn-default">Buscar</button>
 					  <br>
@@ -127,36 +124,12 @@
 	</div><!-- /headerwrap -->
 	
 
-
+	
 
 <div class="container">
 
 
-	<hgroup class="mb20">
-		<h1>Publicaciones encontradas</h1>
-		<h2 class="lead"><strong class="text-danger">4</strong> resultados fueron encontrados para la busqueda <strong class="text-danger">Lorem</strong></h2>								
-	</hgroup>
-
-    <section class="col-xs-12 col-sm-6 col-md-12 mb20">
-		<article class="search-result row">
-
-			<div class="col-xs-12 col-sm-12 col-md-4">
-				<ul class="meta-search">
-					<li><i class="glyphicon glyphicon-calendar"></i>Fecha publicación: <span>02/15/2014</span></li>
-					<li><i class="glyphicon glyphicon-time"></i> Entidad publicación: <span>Municipalidad de Cochabamba</span></li>
-					<li><i class="glyphicon glyphicon-tags"></i> <span>People</span></li>
-				</ul>
-			</div>
-			<div class="col-xs-12 col-sm-12 col-md-8 excerpet">
-				<h3><a href="/contracts/1" title="">Voluptatem, exercitationem, suscipit, distinctio</a></h3>
-				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem, exercitationem, suscipit, distinctio, qui sapiente aspernatur molestiae non corporis magni sit sequi iusto debitis delectus doloremque.</p>						
-                <span class="plus"><a href="#" title="Lorem ipsum">Mas info<i class="glyphicon glyphicon-plus"></i></a></span>
-			</div>
-			<span class="clearfix borda"></span>
-			<br><br>
-		</article>			
-	</section>
-
+	<div id="contracts"><%= render 'contracts' %></div>
 
 
 </div>

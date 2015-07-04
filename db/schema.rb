@@ -11,17 +11,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150703010515) do
+ActiveRecord::Schema.define(version: 20150703234542) do
 
   create_table "applying_companies", force: true do |t|
-    t.integer  "contracts_id"
-    t.integer  "companies_id"
+    t.integer  "contract_id"
+    t.integer  "company_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "applying_companies", ["companies_id"], name: "index_applying_companies_on_companies_id", using: :btree
-  add_index "applying_companies", ["contracts_id"], name: "index_applying_companies_on_contracts_id", using: :btree
+  add_index "applying_companies", ["company_id"], name: "index_applying_companies_on_company_id", using: :btree
+  add_index "applying_companies", ["contract_id"], name: "index_applying_companies_on_contract_id", using: :btree
 
   create_table "awarding_types", force: true do |t|
     t.string   "name"
@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(version: 20150703010515) do
     t.string   "document_number"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "company_origin"
   end
 
   create_table "contract_documents", force: true do |t|
@@ -57,6 +58,7 @@ ActiveRecord::Schema.define(version: 20150703010515) do
   end
 
   add_index "contract_forms", ["contract_id"], name: "index_contract_forms_on_contract_id", using: :btree
+  add_index "contract_forms", ["name"], name: "index_contract_forms_on_name", using: :btree
 
   create_table "contract_types", force: true do |t|
     t.string   "name"
@@ -65,8 +67,8 @@ ActiveRecord::Schema.define(version: 20150703010515) do
   end
 
   create_table "contracted_companies", force: true do |t|
-    t.integer  "contracts_id"
-    t.integer  "companies_id"
+    t.integer  "contract_id"
+    t.integer  "company_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "contract_number"
@@ -74,8 +76,8 @@ ActiveRecord::Schema.define(version: 20150703010515) do
     t.decimal  "contract_amount"
   end
 
-  add_index "contracted_companies", ["companies_id"], name: "index_contracted_companies_on_companies_id", using: :btree
-  add_index "contracted_companies", ["contracts_id"], name: "index_contracted_companies_on_contracts_id", using: :btree
+  add_index "contracted_companies", ["company_id"], name: "index_contracted_companies_on_company_id", using: :btree
+  add_index "contracted_companies", ["contract_id"], name: "index_contracted_companies_on_contract_id", using: :btree
 
   create_table "contracts", force: true do |t|
     t.string   "origin_id"
@@ -110,8 +112,10 @@ ActiveRecord::Schema.define(version: 20150703010515) do
 
   add_index "contracts", ["awarding_type_id"], name: "index_contracts_on_awarding_type_id", using: :btree
   add_index "contracts", ["contract_type_id"], name: "index_contracts_on_contract_type_id", using: :btree
+  add_index "contracts", ["description"], name: "index_contracts_on_description", using: :btree
   add_index "contracts", ["entity_id"], name: "index_contracts_on_entity_id", using: :btree
   add_index "contracts", ["mode_id"], name: "index_contracts_on_mode_id", using: :btree
+  add_index "contracts", ["publication_date"], name: "index_contracts_on_publication_date", using: :btree
   add_index "contracts", ["region_id"], name: "index_contracts_on_region_id", using: :btree
   add_index "contracts", ["regulation_id"], name: "index_contracts_on_regulation_id", using: :btree
   add_index "contracts", ["selection_method_id"], name: "index_contracts_on_selection_method_id", using: :btree

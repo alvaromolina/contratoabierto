@@ -19,7 +19,8 @@ module Contratoabierto
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
-
+    #Encoding.default_internal, Encoding.default_external = ['utf-8'] * 2
+    #config.encoding = 'ISO-8859-1'
     config.assets.paths << Rails.root.join("app", "assets", "fonts")
   end
 end

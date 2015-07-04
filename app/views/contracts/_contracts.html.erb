@@ -1,0 +1,33 @@
+
+<hgroup class="mb20">
+<h1>Publicaciones encontradas</h1>
+<h2 class="lead"><strong class="text-danger"><%=@contracts.total_entries%></strong> resultados fueron encontrados para la busqueda <strong class="text-danger">Lorem</strong></h2>								
+</hgroup>
+
+<% @contracts.each do |contract| %>
+<section class="col-xs-12 col-sm-6 col-md-12 mb20">
+	<article class="search-result row">
+		<div class="col-xs-12 col-sm-12 col-md-4">
+			<ul class="meta-search">
+				<li><h2><small><i class="glyphicon glyphicon-calendar"></i>
+					Fecha publicación: <b><%= contract.publication_date %></b></small></h2></li>
+				<li><h2><small><i class="glyphicon glyphicon-home"></i>Entidad publicación: <br><b><%= contract.entity.name %></b></h2></small></li>
+				<li><h2><small><i class="glyphicon glyphicon-asterisk"></i>
+				Estado: <b><%= contract.status.name %></b></small></h2></li>
+			</ul>
+		</div>
+		<div class="col-xs-12 col-sm-12 col-md-8 excerpet">
+			<h2><a href="/contracts/<%=contract.id%>" title="">
+				<%= contract.description.camelize %>
+			</a></h2>
+
+            <span class="plus"><a href="#" title="Mas info" style="color: white;">Mas info<i class="glyphicon glyphicon-plus"></i></a></span>
+		</div>
+		<span class="clearfix borda"></span>
+		<br><br>
+	</article>			
+</section>
+<% end %>
+
+
+<%= will_paginate @contracts, renderer: BootstrapPagination::Rails, :previous_label => 'Anteriores', :next_label => 'Siguientes' %>

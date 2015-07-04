@@ -8,7 +8,9 @@ Contratoabierto::Application.routes.draw do
 
   resources :contract_forms
 
-  resources :contracts
+  resources :contracts do
+    get :autocomplete_entity_name, :on => :collection
+  end
 
   resources :statuses
 

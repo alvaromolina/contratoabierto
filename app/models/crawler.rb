@@ -8,7 +8,7 @@ class Crawler < ActiveRecord::Base
 		}
 
 
-		from_date = Date.new(year, 1, 1)
+		from_date = Date.new(year, 12, 28)
 		to_date   = Date.new(year, 12, 31)
 
 		(from_date..to_date).each do |date|  
@@ -153,19 +153,19 @@ class Crawler < ActiveRecord::Base
 							tds[12].search('a').each do |link_form|
 								form_link = link_form[:onclick].gsub("openWindow(\'..","").gsub("\');","")
 								form_name = link_form.text.strip
-								ContractForm.create(contract_id: c.id,
+								ContractForm.where(contract_id: c.id,
 									name: form_name,
 									link: form_link
-								)
+								).first_or_create
 							end
 
 							tds[11].search('a').each do |link_document|
 								document_link = link_document[:onclick].gsub("openWindow1(\'..","").gsub("\');","")
 								document_name = link_document.text.strip
-								ContractDocument.create(contract_id: c.id,
+								ContractDocument.where(contract_id: c.id,
 									name: document_name,
 									link: document_link
-								)
+								).first_or_create
 							end
 						end
 					end
@@ -187,79 +187,534 @@ class Crawler < ActiveRecord::Base
 			agent.user_agent_alias = 'Mac Safari'
 		}
 
-		contract_forms = ContractForm.where(name: 'FORM 100').first(1)
+		contract_forms = ContractForm.where(name: 'FORM 100').first(500)
 
 
 		contract_forms.each do |contract_form|
 
+			c = Contract.find(contract_form.contract_id)
 			headers = {"Accept"=>"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8", 
 					"Cache-Control"	=> "max-age=0",
 					"User-Agent" =>	"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/600.5.17 (KHTML, like Gecko) Version/8.0.5 Safari/600.5.17"}
 
-			c = Contract.find(contract_form.contract_id)
+			
 			puts contract_form.link
 
-			a.pre_connect_hooks << Proc.new { sleep 0.05 }
+			a.pre_connect_hooks << Proc.new { sleep 0.02 }
 			a.get('https://www.sicoes.gob.bo/'+contract_form.link, nil, nil,headers) do |page|
 				tables = page.parser.xpath('/html/body/table')
-				#trs = tables[3].search('tr')[1].css('td').first.css('table').first.search('tr')[1].css('td').first.css('table').first.search('tr');
+				trs = tables[3].search('tr')[1].css('td').first.css('table').first.search('tr')[1].css('td').first.css('table').first.search('tr');
 				
-				#awarding_type = AwardingType.where(name: trs[1].css('td')[2].text.upcase.strip).first_or_create
-				#c.awarding_type_id = awarding_type.id
+				awarding_type = AwardingType.where(name: trs[1].css('td')[2].text.upcase.strip).first_or_create
+				c.awarding_type_id = awarding_type.id
 
 				
-				#contract_type = ContractType.where(name: trs[3].css('td')[2].text.upcase.strip).first_or_create
-				#c.contract_type_id = contract_type.id
+				contract_type = ContractType.where(name: trs[3].css('td')[2].text.upcase.strip).first_or_create
+				c.contract_type_id = contract_type.id
 
 
-				#selection_method = SelectionMethod.where(name: trs[4].css('td')[2].text.upcase.strip).first_or_create
-				#c.selection_method_id = selection_method.id
+				selection_method = SelectionMethod.where(name: trs[4].css('td')[2].text.upcase.strip).first_or_create
+				c.selection_method_id = selection_method.id
 
 				#c.currency_contract = trs[6].css('td')[2].text.strip
-
 
 				total_td = tables[4].search('tr')[1].css('td').first.css('table').first.search('tr')[1].css('td').first.css('table').first.css('tr').last.css('td').last;
-				puts total_td.text.gsub(",","").to_d
-				#c.save
-
-			end
-
-		end
-
-	end
-
-
-	def self.crawl_forms200
-
-		a = Mechanize.new { |agent|
-			agent.user_agent_alias = 'Mac Safari'
-		}
-
-		#contract_forms = ContractForm.where(name: 'FORM 100').first(500)
-
-
-		##contract_forms.each do |contract_form|
-
-			contract_form.find(472186)
-
-			headers = {"Accept"=>"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8", 
-					"Cache-Control"	=> "max-age=0",
-					"User-Agent" =>	"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/600.5.17 (KHTML, like Gecko) Version/8.0.5 Safari/600.5.17"}
-
-			c = Contract.find(contract_form.contract_id)
-			puts contract_form.link
-
-			a.pre_connect_hooks << Proc.new { sleep 0.05 }
-			a.get('https://www.sicoes.gob.bo/'+contract_form.link, nil, nil,headers) do |page|
-				
-
-				#c.currency_contract = trs[6].css('td')[2].text.strip
+				specified_amount = total_td.text.gsub(",","").to_d
+				c.specified_amount = specified_amount
 
 				c.save
 
 			end
 
-		#end
+		end
+
+		return ""
+
+	end
+
+
+	def self.crawl_forms200(init_range, end_range)
+
+		while(1)
+			puts "proceso" + init_range.to_s + ".." + end_range.to_s
+			crawl_forms200_proc(init_range, end_range)
+		end
+
+	end
+
+	def self.crawl_forms200_proc(init_range, end_range)
+
+		a = Mechanize.new { |agent|
+			agent.user_agent_alias = 'Mac Safari'
+		}
+
+		nbsp = Nokogiri::HTML("&nbsp;").text
+
+		contract_forms = ContractForm.where("contract_forms.name = 'FORM 200'
+and contract_forms.id between ? and ?
+and exists (select 1
+from contracts
+where contracts.id = contract_forms.contract_id
+and contracts.status_id = 1) 
+and not exists (select 1
+from contracted_companies
+where contracted_companies.contract_id = contract_forms.contract_id)
+		", init_range, end_range).order(:id).limit(10);
+
+		contract_forms.each do |contract_form|
+
+			#contract_form = ContractForm.find(472186)
+
+			headers = {"Accept"=>"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8", 
+					"Cache-Control"	=> "max-age=0",
+					"User-Agent" =>	"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/600.5.17 (KHTML, like Gecko) Version/8.0.5 Safari/600.5.17"}
+
+			c = Contract.find(contract_form.contract_id)
+
+			puts contract_form.link
+			puts init_range.to_s + ".." + end_range.to_s
+			puts contract_form.id
+
+
+			a.pre_connect_hooks << Proc.new { sleep 0.01 }
+			a.get('https://www.sicoes.gob.bo/'+contract_form.link, nil, nil,headers) do |page|
+				
+				tables = page.parser.xpath('/html/body/table')
+				#Empresas
+				trs = tables[2].css('tr');
+
+				#puts trs
+				cont  = 0
+				length_trs = trs.count
+
+
+				trs.each do |tr|
+
+					if cont > 2 and cont < (length_trs-1)
+
+	
+						tds = tr.css('td')
+
+
+						if (tds.count >= 5)
+
+							company = Company.where(
+								name: tds[4].text.upcase.strip, 
+								company_type: "EMPRESA",
+								company_origin: tds[1].text.upcase.strip,
+								document_type: tds[2].text.upcase.strip,
+								document_number: tds[3].text.upcase.strip,
+								).first_or_create
+
+							ApplyingCompany.where(
+								company_id: company.id,
+								contract_id: c.id
+							).first_or_create
+						end
+					end
+					cont = cont + 1
+				end
+
+
+
+				#Sociedades Accidentales
+				trs = tables[3].css('tr');
+				cont  = 0
+				length_trs = trs.count
+
+				trs.each do |tr|
+					if cont > 2 and cont < (length_trs-1)
+						tds = tr.css('td')
+						if (tds.count >= 3)
+							company = Company.where(
+								name: tds[1].text.upcase.strip, 
+								company_type: "SOCIEDAD ACCIDENTAL",
+								#company_origin: tds[1].text.upcase.strip,
+								#document_type: tds[2].text.upcase.strip,
+								#document_number: tds[3].text.upcase.strip,
+								).first_or_create
+							ApplyingCompany.where(
+								company_id: company.id,
+								contract_id: c.id
+							).first_or_create
+						end
+					end
+					cont = cont + 1
+				end
+
+				cont = 0 
+				trs = tables[5].css('tr');
+				length_trs = trs.count
+				trs.each do |tr|
+					if cont > 3 and cont < (length_trs-1)
+
+
+						tds = tr.css('td')
+						if (tds.count >= 3)
+
+							company = Company.joins(:applying_companies).where("applying_companies.contract_id = ? and companies.name like ?", c.id, tds[0].text.upcase.strip+"%").first
+							if company
+
+								ContractedCompany.where(
+									contract_id: c.id, 
+									company_id: company.id,
+									contract_number: tds[1].text.strip,
+									contract_date: tds[2].text.strip.gsub(nbsp, " ").to_date,
+									contract_amount: tds[3].text.gsub(",","").to_d,
+								).first_or_create
+
+							end
+						end
+					end
+					cont = cont + 1
+				end
+				#c.save
+			end
+		end
+		return ""
+
+	end
+
+
+	def self.crawl_forms_200extra
+
+		a = Mechanize.new { |agent|
+			agent.user_agent_alias = 'Mac Safari'
+		}
+
+		nbsp = Nokogiri::HTML("&nbsp;").text
+
+		contract_forms = ContractForm.where(:contract_id =>
+[336523,
+119263,
+352788,
+136016,
+335427,
+189514,
+365665,
+344922,
+387980,
+776,
+310771,
+133772,
+76938,
+102002,
+321252], :name => ['FORM 200'])
+
+		contract_forms.each do |contract_form|
+
+			#contract_form = ContractForm.find(472186)
+
+			headers = {"Accept"=>"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8", 
+					"Cache-Control"	=> "max-age=0",
+					"User-Agent" =>	"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/600.5.17 (KHTML, like Gecko) Version/8.0.5 Safari/600.5.17"}
+
+			c = Contract.find(contract_form.contract_id)
+
+
+			a.pre_connect_hooks << Proc.new { sleep 0.01 }
+			a.get('https://www.sicoes.gob.bo/'+contract_form.link, nil, nil,headers) do |page|
+				
+				tables = page.parser.xpath('/html/body/table')
+				#Empresas
+				trs = tables[2].css('tr');
+
+				#puts trs
+				cont  = 0
+				length_trs = trs.count
+
+
+				trs.each do |tr|
+
+					if cont > 2 and cont < (length_trs-1)
+
+	
+						tds = tr.css('td')
+
+
+						if (tds.count >= 5)
+
+							company = Company.where(
+								name: tds[4].text.upcase.strip, 
+								company_type: "EMPRESA",
+								company_origin: tds[1].text.upcase.strip,
+								document_type: tds[2].text.upcase.strip,
+								document_number: tds[3].text.upcase.strip,
+								).first_or_create
+
+							ApplyingCompany.where(
+								company_id: company.id,
+								contract_id: c.id
+							).first_or_create
+						end
+					end
+					cont = cont + 1
+				end
+
+
+
+				#Sociedades Accidentales
+				trs = tables[3].css('tr');
+				cont  = 0
+				length_trs = trs.count
+
+				trs.each do |tr|
+					if cont > 2 and cont < (length_trs-1)
+						tds = tr.css('td')
+						if (tds.count >= 3)
+							company = Company.where(
+								name: tds[1].text.upcase.strip, 
+								company_type: "SOCIEDAD ACCIDENTAL",
+								#company_origin: tds[1].text.upcase.strip,
+								#document_type: tds[2].text.upcase.strip,
+								#document_number: tds[3].text.upcase.strip,
+								).first_or_create
+							ApplyingCompany.where(
+								company_id: company.id,
+								contract_id: c.id
+							).first_or_create
+						end
+					end
+					cont = cont + 1
+				end
+
+				cont = 0 
+				trs = tables[5].css('tr');
+				length_trs = trs.count
+				trs.each do |tr|
+					if cont > 3 and cont < (length_trs-1)
+
+
+						tds = tr.css('td')
+						if (tds.count >= 3)
+
+							company = Company.joins(:applying_companies).where("applying_companies.contract_id = ? and companies.name like ?", c.id, tds[0].text.upcase.strip+"%").first
+							if company
+
+								ContractedCompany.where(
+									contract_id: c.id, 
+									company_id: company.id,
+									contract_number: tds[1].text.strip,
+									contract_date: tds[2].text.strip.gsub(nbsp, " ").to_date,
+									contract_amount: tds[3].text.gsub(",","").to_d,
+								).first_or_create
+
+							end
+						end
+					end
+					cont = cont + 1
+				end
+				#c.save
+			end
+		end
+		return ""
+
+	end
+	def self.crawl_forms400(init_range, end_range)
+
+		while(1)
+			puts "proceso" + init_range.to_s + ".." + end_range.to_s
+			crawl_forms400_proc(init_range, end_range)
+		end
+
+	end
+
+	def self.crawl_forms400_proc(init_range, end_range)
+
+		a = Mechanize.new { |agent|
+			agent.user_agent_alias = 'Mac Safari'
+		}
+
+		contract_forms = ContractForm.where("contract_forms.name = 'FORM 400'
+and contract_forms.id between ? and ?
+and exists (select 1
+from contracts
+where contracts.id = contract_forms.contract_id
+and contracts.status_id = 1) 
+and not exists (select 1
+from contracted_companies
+where contracted_companies.contract_id = contract_forms.contract_id)
+		", init_range, end_range).order(:id).limit(10);
+
+
+		contract_forms.each do |contract_form|
+
+
+			#contract_form = ContractForm.find(1)
+
+			c = Contract.find(contract_form.contract_id)
+			headers = {"Accept"=>"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8", 
+					"Cache-Control"	=> "max-age=0",
+					"User-Agent" =>	"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/600.5.17 (KHTML, like Gecko) Version/8.0.5 Safari/600.5.17"}
+
+			
+			puts contract_form.link
+			puts init_range.to_s + ".." + end_range.to_s
+			puts contract_form.id
+
+
+			a.pre_connect_hooks << Proc.new { sleep 0.05 }
+			a.get('https://www.sicoes.gob.bo/'+contract_form.link, nil, nil,headers) do |page|
+				tables = page.parser.xpath('/html/body/table')
+				
+
+				#Empresas
+				trs = tables[3].css('tr')
+				cont  = 0
+				length_trs = trs.count
+
+				trs.each do |tr|
+					#puts cont
+					#puts tr
+					if cont > 2 and cont < (length_trs-1)
+						tds = tr.css('td')
+						if (tds.count >= 3)
+							company = Company.where(
+								name: tds[4].text.upcase.strip, 
+								company_type: "EMPRESA",
+								company_origin: tds[1].text.upcase.strip,
+								document_type: tds[2].text.upcase.strip,
+								document_number: tds[3].text.upcase.strip,
+								).first_or_create
+							ContractedCompany.where(
+									company_id: company.id,
+									contract_id: c.id
+							).first_or_create
+						end
+					end
+					cont = cont + 1
+				end
+
+
+				#Sociedades Accidentales
+				trs = tables[4].css('tr');
+				cont  = 0
+				length_trs = trs.count
+				trs.each do |tr|
+					if cont > 2 and cont < (length_trs-1)
+						tds = tr.css('td')
+						if (tds.count >= 3)
+							company = Company.where(
+								name: tds[1].text.upcase.strip, 
+								company_type: "SOCIEDAD ACCIDENTAL",
+								#company_origin: tds[1].text.upcase.strip,
+								#document_type: tds[2].text.upcase.strip,
+								#document_number: tds[3].text.upcase.strip,
+								).first_or_create
+							ContractedCompany.where(
+									company_id: company.id,
+									contract_id: c.id
+							).first_or_create
+						end
+					end
+					cont = cont + 1
+				end
+			end
+
+		end
+
+		return ""
+
+	end
+
+
+	def self.crawl_forms400_extra
+
+		a = Mechanize.new { |agent|
+			agent.user_agent_alias = 'Mac Safari'
+		}
+
+		contract_forms = ContractForm.where(:contract_id =>
+[336523,
+119263,
+352788,
+136016,
+335427,
+189514,
+365665,
+344922,
+387980,
+776,
+310771,
+133772,
+76938,
+102002,
+321252], :name => ['FORM 400'])
+
+   
+		contract_forms.each do |contract_form|
+
+
+			#contract_form = ContractForm.find(1)
+
+			c = Contract.find(contract_form.contract_id)
+			headers = {"Accept"=>"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8", 
+					"Cache-Control"	=> "max-age=0",
+					"User-Agent" =>	"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/600.5.17 (KHTML, like Gecko) Version/8.0.5 Safari/600.5.17"}
+
+
+
+			a.pre_connect_hooks << Proc.new { sleep 0.02 }
+			a.get('https://www.sicoes.gob.bo/'+contract_form.link, nil, nil,headers) do |page|
+				tables = page.parser.xpath('/html/body/table')
+				
+
+				#Empresas
+				trs = tables[3].css('tr')
+				cont  = 0
+				length_trs = trs.count
+
+				trs.each do |tr|
+					#puts cont
+					#puts tr
+					if cont > 2 and cont < (length_trs-1)
+						tds = tr.css('td')
+						if (tds.count >= 3)
+							company = Company.where(
+								name: tds[4].text.upcase.strip, 
+								company_type: "EMPRESA",
+								company_origin: tds[1].text.upcase.strip,
+								document_type: tds[2].text.upcase.strip,
+								document_number: tds[3].text.upcase.strip,
+								).first_or_create
+							ContractedCompany.where(
+									company_id: company.id,
+									contract_id: c.id
+							).first_or_create
+						end
+					end
+					cont = cont + 1
+				end
+
+
+				#Sociedades Accidentales
+				trs = tables[4].css('tr');
+				cont  = 0
+				length_trs = trs.count
+				trs.each do |tr|
+					if cont > 2 and cont < (length_trs-1)
+						tds = tr.css('td')
+						if (tds.count >= 3)
+							company = Company.where(
+								name: tds[1].text.upcase.strip, 
+								company_type: "SOCIEDAD ACCIDENTAL",
+								#company_origin: tds[1].text.upcase.strip,
+								#document_type: tds[2].text.upcase.strip,
+								#document_number: tds[3].text.upcase.strip,
+								).first_or_create
+							ContractedCompany.where(
+									company_id: company.id,
+									contract_id: c.id
+							).first_or_create
+						end
+					end
+					cont = cont + 1
+				end
+			end
+
+		end
+
+		return ""
 
 	end
 

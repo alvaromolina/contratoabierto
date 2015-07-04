@@ -1,9 +1,12 @@
 class ContractsController < ApplicationController
   before_action :set_contract, only: [:edit, :update, :destroy]
+  autocomplete :entity, :name, :full => true
 
 
   def home
-    
+   # @contracts = Contract.where('publication_date >= ?','2015-07-01').paginate(:per_page => 10, :page => params[:page])
+    @contracts = Contract.where('publication_date >= ?','2015-07-01').paginate(:per_page => 10, :page => params[:page])
+
   end
 
   def about

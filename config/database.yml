@@ -5,7 +5,7 @@
 #   gem 'sqlite3'
 development:
   adapter: postgresql
-  encoding: latin1
+  encoding: utf-8
   database: contratoabierto
   pool: 5
   username: postgres

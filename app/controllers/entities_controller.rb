@@ -1,10 +1,10 @@
 class EntitiesController < ApplicationController
   before_action :set_entity, only: [:show, :edit, :update, :destroy]
-
   # GET /entities
   # GET /entities.json
   def index
     @entities = Entity.all
+    @products = Product.all().first(10)
   end
 
   # GET /entities/1
