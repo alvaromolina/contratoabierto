@@ -4,7 +4,7 @@
   <div id="blue">
       <div class="container">
       <div class="row">
-        <h3 style="float: right;">Publicación.</h3>
+        <h3 style="float: right;">Publicación <%= @contract.origin_id %>.</h3>
       </div><!-- /row -->
       </div> <!-- /container -->
   </div><!-- /blue -->
@@ -15,25 +15,34 @@
 
    <div class="container mt">
     <div class="row">
-      
-      <div class="col-lg-5 col-lg-offset-1">
-        <div class="spacing"></div>
-        <h4>Nombre del proyecto</h4>
-        <p>Objeto de la contracion: mmy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
-        <h4>Our Proposal</h4>
-        <p>It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+      <div class="col-lg-6 col-lg-offset-1">
+        <h2>Entidad Contratante:</h2>
+        <p style="font-size: 22px;"><%= @contract.entity.name %></p>
+        <h2>Objeto del proyecto:</h2>
+        <p style="font-size: 22px;"><%= @contract.description.camelize %></p>
       </div>
-      <div class="col-lg-4 col-lg-offset-1">
-        <div class="spacing"></div>
+      <div class="col-lg-3">
         <h4>Detalles</h4>
         <div class="hline"></div>
-        <p><b>Date:</b> April 18, 2014</p>
-        <p><b>Author:</b> Marcel Newman</p>
-        <p><b>Categories:</b> Illustration, Web Design, Wordpress</p>
-        <p><b>Tagged:</b> Flat, UI, Development</p>
-        <p><b>Client:</b> Wonder Corp.</p>
-        <p><b>Website:</b> <a href="http://blacktie.co">http://blacktie.co</a></p>
+        <p><b>Estado:</b><%= @contract.status.name  %></p>
+        <p><b>Fecha publicacion:</b><%= @contract.publication_date  %></p>
+        <p><b>Fecha presentacion:</b><%= @contract.presentation_date  %></p>
+
+        <h4>Formularios</h4>
+        <div class="hline"></div>
+        <% @contract.contract_forms.each do |form|  %>
+          <a href="https://www.sicoes.gob.bo/<%= form.link %>" target="_blank"><%= form.name %></a>
+        <% end %>
+        <h4>Documentos</h4>
+        <div class="hline"></div>
+
+        <% @contract.contract_documents.each do |form|  %>
+          <a href="https://www.sicoes.gob.bo/<%= form.link %>" target="_blank"><%= form.name %></a>
+        <% end %>
+
+        <br>
+        <br>
       </div>
       
-    </div><! --/row -->
-   </div><! --/container -->
+    </div><!--/row -->
+   </div><!--/container -->

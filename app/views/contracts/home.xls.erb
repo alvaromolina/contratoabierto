@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:x="urn:schemas-microsoft-com:office:excel"
+  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:html="http://www.w3.org/TR/REC-html40">
+  <Worksheet ss:Name="Sheet1">
+    <Table>
+      <Row>
+      <Cell><Data ss:Type="String">Origin<Cell><Data ss:Type="String">
+      <Cell><Data ss:Type="String">Entity<Cell><Data ss:Type="String">
+      <Cell><Data ss:Type="String">Mode<Cell><Data ss:Type="String">
+      <Cell><Data ss:Type="String">Control number<Cell><Data ss:Type="String">
+      <Cell><Data ss:Type="String">Publication number<Cell><Data ss:Type="String">
+      <Cell><Data ss:Type="String">Description<Cell><Data ss:Type="String">
+      <Cell><Data ss:Type="String">Status<Cell><Data ss:Type="String">
+      <Cell><Data ss:Type="String">Contracted amount cents<Cell><Data ss:Type="String">
+      <Cell><Data ss:Type="String">Contracted amount currency<Cell><Data ss:Type="String">
+      <Cell><Data ss:Type="String">Publication date<Cell><Data ss:Type="String">
+      <Cell><Data ss:Type="String">Presentation date<Cell><Data ss:Type="String">
+      <Cell><Data ss:Type="String">Contact<Cell><Data ss:Type="String">
+      <Cell><Data ss:Type="String">Warranty<Cell><Data ss:Type="String">
+      <Cell><Data ss:Type="String">Specification price<Cell><Data ss:Type="String">
+      <Cell><Data ss:Type="String">Aclaration date<Cell><Data ss:Type="String">
+      <Cell><Data ss:Type="String">Granted date<Cell><Data ss:Type="String">
+      <Cell><Data ss:Type="String">Abandonment date<Cell><Data ss:Type="String">
+      <Cell><Data ss:Type="String">Region<Cell><Data ss:Type="String">
+      <Cell><Data ss:Type="String">Regulation<Cell><Data ss:Type="String">
+      </Row>
+    <% @contracts.each do |contract| %>
+      <Row>
+        <Cell><Data ss:Type="Number"><%= contract.origin_id %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= contract.entity.name %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= contract.mode.origin_code %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= contract.control_number %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= contract.publication_number %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= contract.description %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= contract.status.name %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= contract.contracted_amount_cents %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= contract.contracted_amount_currency %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= contract.publication_date %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= contract.presentation_date %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= contract.contact %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= contract.warranty %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= contract.specification_price %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= contract.aclaration_date %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= contract.granted_date %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= contract.abandonment_date %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= contract.region.name %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= contract.regulation.origin_code %></Data></Cell>
+      </Row>
+    <% end %>
+    </Table>
+  </Worksheet>
+</Workbook>

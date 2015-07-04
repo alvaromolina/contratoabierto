@@ -2,12 +2,14 @@ Contratoabierto::Application.routes.draw do
   
 
   get '/about' => 'contracts#about'
+  get '/data' => 'contracts#data'
+  get '/home' => 'contracts#home'
+  get '/mobile' => 'contracts#mobile'
+
 
 
   resources :contract_documents
-
   resources :contract_forms
-
   resources :contracts do
     get :autocomplete_entity_name, :on => :collection
   end

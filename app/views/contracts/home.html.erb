@@ -7,18 +7,33 @@
   </ol>
   <!-- Wrapper for slides -->
   <div class="carousel-inner" role="listbox">
-    <div class="item active">
+
+     <div class="item active">
+		<div class="carousel-caption" style="text-align: right;">
+			<h1 style="font-family: 'Open Sans'; font-size: 35px;">&iquest;Qu&eacute; empresas son las mas beneficiadas ?
+			<br>
+			<br>
+			&iquest; Te gustaria saber cu&aacute;nto cuesta la obra de tu ciudad?
+			<br>
+			<br>
+			&iquest; Te perdiste una oportunidad de una convocatoria p&uacute;blica por no enterarte a tiempo?
+			<br>
+			</h1>
+			<br>
+
+
+			<br>
+			<br>
+		</div>
+		<div class="slider-size">
+			<%= image_tag "doblecarretera.jpg" %>
+		</div>
+    </div>
+
+    <div class="item">
  		<div class="carousel-caption" style="text-align: right;">
-			<h1 >Encuentra licitaciones publicas en Bolivia a traves de nuestro <a href="#search">buscador</a></h1>
-			<h3>O recibe notificaciones en tu mail:</h3>
-			<form class="form-inline">
-
-			  <div class="form-group">
-				    <input type="email" class="form-control col-xs-2 input-lg" id="objeto" placeholder="Email">
-			  </div>
-			<button class="btn btn-lg btn-primary">Suscribirse</button>
-
-			</form>
+			<h1 style="font-family: 'Open Sans'; font-size: 40px;">Este buscador te ayudar&aacute; a econtrar las  convocatorias, costo, empresas, y la modalidad de las contrataciones publicas</h1>
+			<h3 style="font-family: 'Open Sans'; font-size: 20px;">O recibe notificaciones en tu mail:</h3><a href="http://signup.contratoabierto.com" target="_blank" class="btn btn-lg btn-primary">Suscribirse</a>
 			<br>
 			<br>
 			<br>
@@ -26,30 +41,26 @@
 			<br>
 		</div>
 		<div class="slider-size">
-			<%= image_tag "obraspublicas2.jpg" %>
-		</div>
-
-    </div>
-    <div class="item">
-		<div class="carousel-caption">
-			<h1>Explora los datos y participa en el control social</h1>
-			<br><br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-		</div>
-		<div class="slider-size">
-			<%= image_tag "participa.jpg" %>
+			<%= image_tag "plazamurillo.png" %>
 		</div>
     </div>
+
     <div class="item">
 		<div class="carousel-caption">
-			<h1>Explora los datos y participa en el control social</h1>
+
+			<h1 style="font-family: 'Open Sans'; font-size: 45px;">Explora los datos y participa en el control social
+			<br>
+			</h1>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+			<h1></h1>
 		</div>
 		<div class="slider-size">
-			<%= image_tag "obraspublicas2.jpg" %>
+			<%= image_tag "teleferico.png" %>
 		</div>
     </div>
   </div>
@@ -65,9 +76,7 @@
   </a>
 </div>
 
-
-
-     	<!-- *****************************************************************************************************************
+<!-- *****************************************************************************************************************
 	 HEADERWRAP
 	 ***************************************************************************************************************** -->
 
@@ -75,31 +84,41 @@
 	    <div class="container">
 			<div class="row">
 				<div class="col-lg-12">
-					<h1>Buscar contrataciones p&uacute;blicas en Bolivia
+					<h1>Buscar publicaciones de licitaciones en Bolivia
 					<!--
 						<span style="color: #DF151A;">Bo</span><span style="color: #F4F328;">li</span><span style="color: #00DA3C;">via</span</h1>
 					-->
 				</div>
 			</div>
-			<form class="form-inline" action="/">
+			<form class="form-horizontal" action="/">
 
 			<div class="row">
-				<div class="col-lg-12">
+				<div class="col-lg-8 col-lg-offset-2">
 					  <div class="form-group">
-						    <input type="text" size="35" class="form-control input-lg" id="objeto" placeholder="Objeto Contrato">
+						    <input type="text" size="75" class="form-control input-lg" name="objeto" id="objeto" value="<%= @objeto %>" placeholder="Objeto Contrato">
 					  </div>
 					  <div class="form-group">
-					  	<%= autocomplete_field_tag 'entity', '', autocomplete_entity_name_contracts_path, {:class=> "form-control input-lg", :size => 35, :placeholder => "Entidad", :id => "entidad", 'data-auto-focus' => true} %>
+					  	<%= autocomplete_field_tag 'entity', @entity? @entity.name : '', autocomplete_entity_name_contracts_path, {:class=> "form-control input-lg", :size => 75, :placeholder => "Entidad", :id => "entidad", 'data-auto-focus' => true} %>
 					  </div>
+					  <div class="form-group">
+
+					  	    <h3><label for="status" style="color: white;" class="col-sm-2 control-label">Estado:</label></h3>
+
+					  	    <div class="col-sm-10 ">
+							<%=  
+					    	collection_select(:status, :id, Status.all, :id, :name, {:include_blank => 'TODOS LOS ESTADOS', :selected => "10"}, {:class=> "form-control input-lg"})
+					    	%>
+					    	</div>
+					  </div>
+					  <button type="submit" class="col-sm-12 btn btn-lg btn-theme btn-default">Buscar</button>
+					  <a  style="color: white;">
+					  	Busqueda avanzada(pronto)</a>
+					  <!--
 					  <div class="form-group">
 							<%=  
 					    	collection_select(:region, :id, Region.all, :id, :name, {:include_blank => 'TODOS'}, {:class=> "form-control input-lg"})
 					    	%>
 					  </div>
-					  <button type="submit" class="btn btn-lg btn-theme btn-default">Buscar</button>
-					  <br>
-					  <h3 style="float: right;" href="">Busqueda avanzada</h3>
-					  <!--
 					  <div class="form-group">
 						    <input type="date" class="form-control input-lg" id="objeto" placeholder="Fecha Inicio:">
 					  </div>
@@ -123,13 +142,6 @@
 	    </div> <!-- /container -->
 	</div><!-- /headerwrap -->
 	
-
-	
-
 <div class="container">
-
-
 	<div id="contracts"><%= render 'contracts' %></div>
-
-
 </div>

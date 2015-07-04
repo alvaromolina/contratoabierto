@@ -4,6 +4,8 @@ class Contract < ActiveRecord::Base
   belongs_to :status
   belongs_to :region
   belongs_to :regulation
+  has_many :contract_forms
+  has_many :contract_documents
 
   validates :origin_id, uniqueness: true
 

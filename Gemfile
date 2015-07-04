@@ -38,7 +38,7 @@ gem 'rails-jquery-autocomplete'
 
 group :development do
     gem 'capistrano'
-	gem 'rvm-capistrano'
+	gem  'rvm-capistrano',  require: false
 
 end
 

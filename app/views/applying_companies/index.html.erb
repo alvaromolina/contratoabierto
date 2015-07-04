@@ -1,0 +1,25 @@
+<h1>Listing applying_companies</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @applying_companies.each do |applying_company| %>
+      <tr>
+        <td><%= link_to 'Show', applying_company %></td>
+        <td><%= link_to 'Edit', edit_applying_company_path(applying_company) %></td>
+        <td><%= link_to 'Destroy', applying_company, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Applying company', new_applying_company_path %>

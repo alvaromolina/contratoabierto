@@ -1,23 +1,63 @@
 class ContractsController < ApplicationController
-  before_action :set_contract, only: [:edit, :update, :destroy]
+  before_action :set_contract, only: [:show, :edit, :update, :destroy]
   autocomplete :entity, :name, :full => true
 
 
   def home
-   # @contracts = Contract.where('publication_date >= ?','2015-07-01').paginate(:per_page => 10, :page => params[:page])
-    @contracts = Contract.where('publication_date >= ?','2015-07-01').paginate(:per_page => 10, :page => params[:page])
 
+    @objeto = ""
+    first = request.fullpath.split("?")[0]
+    @excel_path = "/home.xls"
+
+
+    if params[:objeto]
+      second = request.fullpath.split("?")[1]
+      @excel_path = @excel_path+"?"+second
+
+
+      @contracts = Contract.all
+
+      @status_id = params[:status][:id]
+      if params[:status] and params[:status][:id] != ""
+        @contracts= @contracts.where('status_id = ?',@status_id)
+      end
+
+      if params[:entity] and params[:entity] != ""
+        @entity = Entity.where("name like ?", params[:entity].upcase + "%").first
+        @contracts= @contracts.where('entity_id = ?',@entity.id)
+      end
+
+      if params[:objeto] and params[:objeto] != ""
+        @objeto = params[:objeto]
+        @contracts= @contracts.where('upper(description) like ?',"%"+params[:objeto].upcase+ "%")
+      end
+
+      @contracts = @contracts.order(:publication_date).paginate(:per_page => 10, :page => params[:page])    
+    else
+      @status_id = 10
+      # @contracts = Contract.where('publication_date >= ?','2015-07-01').paginate(:per_page => 10, :page => params[:page])
+      @contracts = Contract.where('status_id = ?',@status_id).order(:publication_date).paginate(:per_page => 10, :page => params[:page])
+    end
+    respond_to do |format|
+      format.html
+      #format.csv { send_data @products.to_csv } #
+      format.xls
+    end
   end
 
   def about
     
   end
 
+  def mobile
+
+  end
+
 
   # GET /contracts
   # GET /contracts.json
   def index
-    @contracts = Contract.all
+    @contracts = Contract.all.first(50000)
   end
 
   # GET /contracts/1
@@ -38,7 +78,6 @@ class ContractsController < ApplicationController
   # POST /contracts.json
   def create
     @contract = Contract.new(contract_params)
-
     respond_to do |format|
       if @contract.save
         format.html { redirect_to @contract, notice: 'Contract was successfully created.' }

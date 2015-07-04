@@ -1,0 +1,25 @@
+<h1>Listing contracted__companies</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @contracted__companies.each do |contracted__company| %>
+      <tr>
+        <td><%= link_to 'Show', contracted__company %></td>
+        <td><%= link_to 'Edit', edit_contracted__company_path(contracted__company) %></td>
+        <td><%= link_to 'Destroy', contracted__company, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Contracted  company', new_contracted__company_path %>

@@ -4,7 +4,6 @@ class EntitiesController < ApplicationController
   # GET /entities.json
   def index
     @entities = Entity.all
-    @products = Product.all().first(10)
   end
 
   # GET /entities/1
