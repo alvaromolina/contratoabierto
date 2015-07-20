@@ -32,10 +32,10 @@ set :default_environment, {
 # set :scm, :git # You can set :scm explicitly or Capistrano will make an intelligent guess based on known version control directory names
 # Or: `accurev`, `bzr`, `cvs`, `darcs`, `git`, `mercurial`, `perforce`, `subversion` or `none`
 
-role :web, "contratoabierto.com"                          # Your HTTP server, Apache/etc
-role :app, "contratoabierto.com"                          # This may be the same as your `Web` server
-role :db,  "contratoabierto.com", :primary => true # This is where Rails migrations will run
-role :db,  "contratoabierto.com"
+role :web, "162.243.7.211"                          # Your HTTP server, Apache/etc
+role :app, "162.243.7.211"                          # This may be the same as your `Web` server
+role :db,  "162.243.7.211", :primary => true # This is where Rails migrations will run
+role :db,  "162.243.7.211"
 
 
 namespace :deploy do
