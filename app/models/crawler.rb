@@ -8,7 +8,7 @@ class Crawler < ActiveRecord::Base
 		}
 
 
-		from_date = Date.new(year, 12, 28)
+		from_date = Date.new(year, 1, 1)
 		to_date   = Date.new(year, 12, 31)
 
 		(from_date..to_date).each do |date|  
