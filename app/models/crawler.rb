@@ -1,15 +1,18 @@
 class Crawler < ActiveRecord::Base
 
 
-	def self.crawl(year)
+	def self.crawl(from_string,to_string)
 
 		a = Mechanize.new { |agent|
 			agent.user_agent_alias = 'Mac Safari'
 		}
 
 
-		from_date = Date.new(year, 1, 1)
-		to_date   = Date.new(year, 12, 31)
+		#from_date = Date.new(year, 1, 1)
+		#to_date   = Date.new(year, 12, 31)
+
+		from_date = from_string.to_date
+		to_date   = to_string.to_date
 
 		(from_date..to_date).each do |date|  
 
