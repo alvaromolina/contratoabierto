@@ -1,0 +1,43 @@
+<h1>Listing contract_budget_items</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Contract</th>
+      <th>Budget item</th>
+      <th>Description</th>
+      <th>Contract number</th>
+      <th>Unit price</th>
+      <th>Quantity type</th>
+      <th>Quntity</th>
+      <th>Total</th>
+      <th>Origin</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @contract_budget_items.each do |contract_budget_item| %>
+      <tr>
+        <td><%= contract_budget_item.contract %></td>
+        <td><%= contract_budget_item.budget_item %></td>
+        <td><%= contract_budget_item.description %></td>
+        <td><%= contract_budget_item.contract_number %></td>
+        <td><%= contract_budget_item.unit_price %></td>
+        <td><%= contract_budget_item.quantity_type %></td>
+        <td><%= contract_budget_item.quntity %></td>
+        <td><%= contract_budget_item.total %></td>
+        <td><%= contract_budget_item.origin %></td>
+        <td><%= link_to 'Show', contract_budget_item %></td>
+        <td><%= link_to 'Edit', edit_contract_budget_item_path(contract_budget_item) %></td>
+        <td><%= link_to 'Destroy', contract_budget_item, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Contract budget item', new_contract_budget_item_path %>

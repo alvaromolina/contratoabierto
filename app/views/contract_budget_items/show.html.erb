@@ -1,0 +1,49 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Contract:</strong>
+  <%= @contract_budget_item.contract %>
+</p>
+
+<p>
+  <strong>Budget item:</strong>
+  <%= @contract_budget_item.budget_item %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @contract_budget_item.description %>
+</p>
+
+<p>
+  <strong>Contract number:</strong>
+  <%= @contract_budget_item.contract_number %>
+</p>
+
+<p>
+  <strong>Unit price:</strong>
+  <%= @contract_budget_item.unit_price %>
+</p>
+
+<p>
+  <strong>Quantity type:</strong>
+  <%= @contract_budget_item.quantity_type %>
+</p>
+
+<p>
+  <strong>Quntity:</strong>
+  <%= @contract_budget_item.quntity %>
+</p>
+
+<p>
+  <strong>Total:</strong>
+  <%= @contract_budget_item.total %>
+</p>
+
+<p>
+  <strong>Origin:</strong>
+  <%= @contract_budget_item.origin %>
+</p>
+
+<%= link_to 'Edit', edit_contract_budget_item_path(@contract_budget_item) %> |
+<%= link_to 'Back', contract_budget_items_path %>

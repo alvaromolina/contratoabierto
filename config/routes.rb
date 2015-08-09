@@ -1,6 +1,10 @@
 Contratoabierto::Application.routes.draw do
   
 
+  resources :motives
+
+  resources :contract_budget_items
+
   get '/about' => 'contracts#about'
   get '/data' => 'contracts#data'
   get '/home' => 'contracts#home'

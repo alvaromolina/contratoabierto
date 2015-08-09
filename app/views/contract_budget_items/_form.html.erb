@@ -1,0 +1,53 @@
+<%= form_for(@contract_budget_item) do |f| %>
+  <% if @contract_budget_item.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@contract_budget_item.errors.count, "error") %> prohibited this contract_budget_item from being saved:</h2>
+
+      <ul>
+      <% @contract_budget_item.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :contract_id %><br>
+    <%= f.text_field :contract_id %>
+  </div>
+  <div class="field">
+    <%= f.label :budget_item_id %><br>
+    <%= f.text_field :budget_item_id %>
+  </div>
+  <div class="field">
+    <%= f.label :description %><br>
+    <%= f.text_area :description %>
+  </div>
+  <div class="field">
+    <%= f.label :contract_number %><br>
+    <%= f.text_field :contract_number %>
+  </div>
+  <div class="field">
+    <%= f.label :unit_price %><br>
+    <%= f.text_field :unit_price %>
+  </div>
+  <div class="field">
+    <%= f.label :quantity_type %><br>
+    <%= f.text_field :quantity_type %>
+  </div>
+  <div class="field">
+    <%= f.label :quntity %><br>
+    <%= f.text_field :quntity %>
+  </div>
+  <div class="field">
+    <%= f.label :total %><br>
+    <%= f.text_field :total %>
+  </div>
+  <div class="field">
+    <%= f.label :origin %><br>
+    <%= f.text_field :origin %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

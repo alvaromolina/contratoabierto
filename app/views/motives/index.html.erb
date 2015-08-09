@@ -1,0 +1,27 @@
+<h1>Listing motives</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @motives.each do |motive| %>
+      <tr>
+        <td><%= motive.name %></td>
+        <td><%= link_to 'Show', motive %></td>
+        <td><%= link_to 'Edit', edit_motive_path(motive) %></td>
+        <td><%= link_to 'Destroy', motive, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Motive', new_motive_path %>

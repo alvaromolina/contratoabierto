@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  origin_number: MyString
+  item_number: MyString
+  name: MyString
+
+two:
+  origin_number: MyString
+  item_number: MyString
+  name: MyString

@@ -1,4 +1,4 @@
 class ContractedCompany < ActiveRecord::Base
-  belongs_to :contracts
-  belongs_to :companies
+  belongs_to :contract
+  belongs_to :company
 end
