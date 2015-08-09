@@ -513,13 +513,21 @@ where contracted_companies.contract_id = contract_forms.contract_id)
 
 	end
 	def self.crawl_forms400(init_range, end_range)
-
 		restantes = 1
-		while(restantes > 0)
+		cont = 0
+		while(restantes > 0 and cont < 2500 )
 			puts "proceso" + init_range.to_s + ".." + end_range.to_s
-			restantes = crawl_forms400_proc(init_range, end_range)
+			begin
+				restantes = crawl_forms400_proc(init_range, end_range)
+			rescue StandardError => e
+				puts e
+			end
+			cont = cont + 1
+			puts cont
 		end
-
+		puts "Finalizo"
+		puts restantes
+		puts cont
 	end
 
 	def self.crawl_forms400_one
@@ -678,9 +686,6 @@ where contracted_companies.contract_id = contract_forms.contract_id)
 	def self.crawl_forms400_proc(init_range, end_range)
 
 
-		proxy = random_ip
-
-		puts proxy
 		a = Mechanize.new { |agent|
 			agent.user_agent_alias = 'Mac Safari'
 			#agent.set_proxy(proxy[0], proxy[1])
@@ -698,7 +703,7 @@ and contracts.status_id = 1)
 and not exists (select 1
 from contracted_companies
 where contracted_companies.contract_id = contract_forms.contract_id)
-		", init_range, end_range).order(:id).limit(30);
+		", init_range, end_range).order(:id).limit(20);
 
 		restantes = contract_forms.count
 
@@ -778,7 +783,7 @@ where contracted_companies.contract_id = contract_forms.contract_id)
 					trs.each do |tr|
 						if cont > 0
 							tds = tr.css('td')
-							puts tds
+							#puts tds
 							contracted_company = ContractedCompany.joins(:company).where("contracted_companies.contract_id = ? and companies.name like ?", c.id, tds[0].text.upcase.strip+"%").readonly(false).first
 							if contracted_company
 								contracted_company.contract_number =  tds[1].text.strip
@@ -800,7 +805,7 @@ where contracted_companies.contract_id = contract_forms.contract_id)
 					trs.each do |tr|
 						if cont > 0
 							tds = tr.css('td')
-							puts tds
+							#puts tds
 
 							if (tds.count > 3)
 								budget_item = BudgetItem.first_or_create(item_number: tds[1].text.strip)
@@ -827,7 +832,7 @@ where contracted_companies.contract_id = contract_forms.contract_id)
 
 				motive = Motive.where(name: trs[2].css('td')[0].text.upcase.strip).first_or_create
 				c.motive_id = motive.id
-				
+
 				contract_type = ContractType.where(name: trs[2].css('td')[1].text.upcase.strip).first_or_create
 				c.contract_type_id = contract_type.id
 				c.save
