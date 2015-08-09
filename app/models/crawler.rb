@@ -808,7 +808,7 @@ where contracted_companies.contract_id = contract_forms.contract_id)
 							#puts tds
 
 							if (tds.count > 3)
-								budget_item = BudgetItem.first_or_create(item_number: tds[1].text.strip)
+								budget_item = BudgetItem.where(item_number: tds[1].text.strip).first_or_create
 
 								ContractBudgetItem.where(
 									contract_id: c.id,
@@ -845,6 +845,102 @@ where contracted_companies.contract_id = contract_forms.contract_id)
 
 	end
 
+
+	def self.crawl_forms400_b(init_range, end_range)
+		restantes = 1
+		cont = 0
+		while(restantes > 0 and cont < 2500 )
+			puts "proceso" + init_range.to_s + ".." + end_range.to_s
+			begin
+				restantes = crawl_forms400_budget(init_range, end_range)
+			rescue StandardError => e
+				puts e
+			end
+			cont = cont + 1
+			puts cont
+		end
+		puts "Finalizo"
+		puts restantes
+		puts cont
+	end
+
+
+
+	def self.crawl_forms400_budget(init_range, end_range)
+
+
+		a = Mechanize.new { |agent|
+			agent.user_agent_alias = 'Mac Safari'
+			#agent.set_proxy(proxy[0], proxy[1])
+		}
+
+		nbsp = Nokogiri::HTML("&nbsp;").text
+
+		contract_forms = ContractForm.where("contract_forms.name = 'FORM 400'
+and contract_forms.id between ? and ?
+and exists (select 1
+from contracts
+where contracts.id = contract_forms.contract_id
+and contracts.status_id = 1) 
+and not exists (select 1
+from contract_budget_items
+where contract_budget_items.contract_id = contract_forms.contract_id)
+		", init_range, end_range).order(:id).limit(20);
+
+		restantes = contract_forms.count
+
+		contract_forms.each do |contract_form|
+
+			c = Contract.find(contract_form.contract_id)
+			headers = {"Accept"=>"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8", 
+					"Cache-Control"	=> "max-age=0",
+					"User-Agent" =>	"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/600.5.17 (KHTML, like Gecko) Version/8.0.5 Safari/600.5.17"}
+
+			
+
+			a.pre_connect_hooks << Proc.new { sleep 0.1 }
+			a.get('https://www.sicoes.gob.bo/'+contract_form.link, nil, nil,headers) do |page|
+				tables = page.parser.xpath('/html/body/table')
+				
+
+				#Items
+				trs = tables[8].css('tr');
+				length_trs = trs.count
+				if length_trs > 1
+
+					cont  = 0
+					trs.each do |tr|
+						if cont > 0
+							tds = tr.css('td')
+							#puts tds
+
+							if (tds.count > 3)
+								budget_item = BudgetItem.where(item_number: tds[1].text.strip).first_or_create
+
+								ContractBudgetItem.where(
+									contract_id: c.id,
+									budget_item_id: budget_item.id,
+									description: tds[2].text.upcase.strip,
+									contract_number: tds[3].text.strip,
+									unit_price: tds[4].text.gsub(",","").to_d,
+									quantity_type: tds[5].text.upcase.strip,
+									quantity: tds[6].text.gsub(",","").to_d,
+									total: tds[7].text.gsub(",","").to_d,
+									origin: tds[8].text.upcase.strip
+								).first_or_create
+							end
+						end
+						cont = cont + 1
+					end
+				end
+
+
+			end
+		end
+
+		return restantes
+
+	end
 
 	def self.crawl_forms400_extra
 
