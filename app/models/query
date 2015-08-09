@@ -37,6 +37,10 @@ c.description descripcion, c.entity_id entidad_id,
 c.status_id estado_id, 
 (select name from statuses where id = c.status_id) estado,
 c.contracted_amount monto_contratado,
+cc.unit_price precio_unitario,
+cc.quantity_type tipo_cantidad,
+cc.quantity cantidad,
+cc.total precio_total,
 c.publication_date fecha_publicacion,
 c.presentation_date fecha_presentacion, 
 c.contact contacto,
@@ -56,6 +60,7 @@ cs.id compania_id, cs.company_type tipo_compania, cs.company_origin origen_compa
 from contracts c, contracted_companies cc, companies cs
 where cc.contract_id = c.id
 and cs.id = cc.company_id
+
 and c.id in (336523,
 119263,
 352788,
@@ -71,3 +76,38 @@ and c.id in (336523,
 76938,
 102002,
 321252)
+
+
+
+
+select c.id, c.mode_id modo_id, 
+(select name from modes where id = c.mode_id) modo,
+c.description descripcion, c.entity_id entidad_id, 
+(select name from entities where id = c.entity_id) nombre_entidad,
+c.status_id estado_id, 
+(select name from statuses where id = c.status_id) estado,
+c.contracted_amount monto_contratado,
+cc.unit_price precio_unitario,
+cc.quantity_type tipo_cantidad,
+cc.quantity cantidad,
+cc.total precio_total,
+c.publication_date fecha_publicacion,
+c.presentation_date fecha_presentacion, 
+c.contact contacto,
+c.warranty garantia, c.specification_price precio_especificacion,
+c.aclaration_date fecha_aclaracion, c.granted_date fecha_adj_des,
+c.abandonment_date fecha_abandono, c.region_id, 
+c.regulation_id regulacion_id,
+TO_CHAR(c.publication_date,'YYYY') gestion,
+TO_CHAR(c.publication_date,'YYYYMM') periodo,
+TO_CHAR(c.publication_date,'MM') mes,
+TO_CHAR(c.publication_date,'DD') dia,
+(select name from regions where id = c.region_id) region,
+(select origin_code from regulations where id = c.regulation_id) regulacion,
+cs.name nombre_compania,
+cs.id compania_id, cs.company_type tipo_compania, cs.company_origin origen_compania
+
+from contracts c, contracted_companies cc, companies cs
+where cc.contract_id = c.id
+and cs.id = cc.company_id
+and 

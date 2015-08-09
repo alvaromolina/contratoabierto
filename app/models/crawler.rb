@@ -530,159 +530,6 @@ where contracted_companies.contract_id = contract_forms.contract_id)
 		puts cont
 	end
 
-	def self.crawl_forms400_one
-
-		a = Mechanize.new { |agent|
-			agent.user_agent_alias = 'Mac Safari'
-		}
-
-		nbsp = Nokogiri::HTML("&nbsp;").text
-
-
-		contract_form = ContractForm.find(523988)
-
-			#contract_form = ContractForm.find(1)
-
-			c = Contract.find(contract_form.contract_id)
-			headers = {"Accept"=>"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8", 
-					"Cache-Control"	=> "max-age=0",
-					"User-Agent" =>	"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/600.5.17 (KHTML, like Gecko) Version/8.0.5 Safari/600.5.17"}
-
-			
-
-			a.pre_connect_hooks << Proc.new { sleep 0.1 }
-			a.get('https://www.sicoes.gob.bo/'+contract_form.link, nil, nil,headers) do |page|
-				tables = page.parser.xpath('/html/body/table')
-				
-
-				#Empresas
-				trs = tables[3].css('tr')
-				cont  = 0
-				length_trs = trs.count
-
-				trs.each do |tr|
-					#puts cont
-					#puts tr
-					if cont > 2
-						tds = tr.css('td')
-						if (tds.count >= 3) and tds[4].text.upcase.strip != ""
-							company = Company.where(
-								name: tds[4].text.upcase.strip, 
-								company_type: "EMPRESA",
-								company_origin: tds[1].text.upcase.strip,
-								document_type: tds[2].text.upcase.strip,
-								document_number: tds[3].text.upcase.strip,
-								).first_or_create
-							ContractedCompany.where(
-									company_id: company.id,
-									contract_id: c.id
-							).first_or_create
-						end
-					end
-					cont = cont + 1
-				end
-
-
-				#Sociedades Accidentales
-				trs = tables[4].css('tr');
-				cont  = 0
-				length_trs = trs.count
-				trs.each do |tr|
-					if cont > 2
-						tds = tr.css('td')
-						if (tds.count >= 3) and tds[1].text.upcase.strip != ""
-							company = Company.where(
-								name: tds[1].text.upcase.strip, 
-								company_type: "SOCIEDAD ACCIDENTAL",
-								#company_origin: tds[1].text.upcase.strip,
-								#document_type: tds[2].text.upcase.strip,
-								#document_number: tds[3].text.upcase.strip,
-								).first_or_create
-							ContractedCompany.where(
-									company_id: company.id,
-									contract_id: c.id
-							).first_or_create
-						end
-					end
-					cont = cont + 1
-				end
-
-				#Costo del contrato
-				trs = tables[6].css('tr');
-				length_trs = trs.count
-
-				if length_trs > 1
-					#tr = trs[1]
-					cont  = 0
-					trs.each do |tr|
-						if cont > 0
-							tds = tr.css('td')
-							puts tds
-							contracted_company = ContractedCompany.joins(:company).where("contracted_companies.contract_id = ? and companies.name like ?", c.id, tds[0].text.upcase.strip+"%").readonly(false).first
-							if contracted_company
-								contracted_company.contract_number =  tds[1].text.strip
-								contracted_company.contract_date = tds[2].text.strip.gsub(nbsp, " ").to_date
-								contracted_company.contract_amount = tds[3].text.gsub(",","").to_d
-								contracted_company.save
-							end
-						end
-						cont = cont + 1
-					end
-				end
-
-				#Items
-				trs = tables[8].css('tr');
-				length_trs = trs.count
-				if length_trs > 1
-
-					cont  = 0
-					trs.each do |tr|
-						if cont > 0
-							tds = tr.css('td')
-							puts tds
-
-							if (tds.count > 3)
-								budget_item = BudgetItem.first_or_create(item_number: tds[1].text.strip)
-
-								ContractBudgetItem.where(
-									contract_id: c.id,
-									budget_item_id: budget_item.id,
-									description: tds[2].text.upcase.strip,
-									contract_number: tds[3].text.strip,
-									unit_price: tds[4].text.gsub(",","").to_d,
-									quantity_type: tds[5].text.upcase.strip,
-									quantity: tds[6].text.gsub(",","").to_d,
-									total: tds[7].text.gsub(",","").to_d,
-									origin: tds[8].text.upcase.strip
-								).first_or_create
-							end
-						end
-						cont = cont + 1
-					end
-				end
-
-				#tipo de contrato
-				trs = tables[2].css('tr');
-
-				contract_type = ContractType.where(name: trs[2].css('td')[1].text.upcase.strip).first_or_create
-				c.contract_type_id = contract_type.id
-				c.save
-			end
-
-
-
-
-		return ""
-
-	end
-
-	def self.random_ip
-		a = [["81.163.36.137",8080],
-		["220.255.3.170",80]
-		]		
-		return a.sample
-	end
-
 	def self.crawl_forms400_proc(init_range, end_range)
 
 
@@ -788,7 +635,7 @@ where contracted_companies.contract_id = contract_forms.contract_id)
 							if contracted_company
 								contracted_company.contract_number =  tds[1].text.strip
 								contracted_company.contract_date = tds[2].text.strip.gsub(nbsp, " ").to_date
-								contracted_company.contract_amount = tds[3].text.gsub(",","").to_d
+								contracted_company.contract_amount = tds[3].text.strip.to_d
 								contracted_company.save
 							end
 						end
@@ -836,7 +683,6 @@ where contracted_companies.contract_id = contract_forms.contract_id)
 				contract_type = ContractType.where(name: trs[2].css('td')[1].text.upcase.strip).first_or_create
 				c.contract_type_id = contract_type.id
 				c.save
-
 
 			end
 		end
