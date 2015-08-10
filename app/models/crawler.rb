@@ -662,10 +662,10 @@ where contracted_companies.contract_id = contract_forms.contract_id)
 									budget_item_id: budget_item.id,
 									description: tds[2].text.upcase.strip,
 									contract_number: tds[3].text.strip,
-									unit_price: tds[4].text.gsub(",","").to_d,
+									unit_price: tds[4].text.strip.to_d,
 									quantity_type: tds[5].text.upcase.strip,
-									quantity: tds[6].text.gsub(",","").to_d,
-									total: tds[7].text.gsub(",","").to_d,
+									quantity: tds[6].text.strip.to_d,
+									total: tds[7].text.strip.to_d,
 									origin: tds[8].text.upcase.strip
 								).first_or_create
 							end
