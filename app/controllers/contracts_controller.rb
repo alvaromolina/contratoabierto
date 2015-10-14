@@ -4,7 +4,7 @@ class ContractsController < ApplicationController
 
 
   def subscriptions
-    
+
 
   end
 
@@ -39,7 +39,7 @@ class ContractsController < ApplicationController
 
       @contracts = @contracts.order(:publication_date).paginate(:per_page => 10, :page => params[:page])    
     else
-      @status_id = 10
+      @status_id = 11
       # @contracts = Contract.where('publication_date >= ?','2015-07-01').paginate(:per_page => 10, :page => params[:page])
       @contracts = Contract.where('status_id = ?',@status_id).order(:publication_date).paginate(:per_page => 10, :page => params[:page])
     end
