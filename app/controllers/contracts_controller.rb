@@ -3,6 +3,11 @@ class ContractsController < ApplicationController
   autocomplete :entity, :name, :full => true
 
 
+  def subscriptions
+    
+
+  end
+
   def home
 
     @objeto = ""
