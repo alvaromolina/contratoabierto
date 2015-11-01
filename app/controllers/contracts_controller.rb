@@ -12,8 +12,10 @@ class ContractsController < ApplicationController
 
     @objeto = ""
     first = request.fullpath.split("?")[0]
-    @excel_path = "/home.xls"
 
+    @excel_path = "/home.xls"
+    @motive_id = nil
+    @status_id = 11
 
     if params[:objeto]
       second = request.fullpath.split("?")[1]
@@ -44,16 +46,19 @@ class ContractsController < ApplicationController
       end
 
 
-      @contracts = @contracts.order(:publication_date).paginate(:per_page => 10, :page => params[:page])    
+      @contracts = @contracts.order(:publication_date)
     else
       @status_id = 11
       # @contracts = Contract.where('publication_date >= ?','2015-07-01').paginate(:per_page => 10, :page => params[:page])
-      @contracts = Contract.where('status_id = ?',@status_id).order(:publication_date).paginate(:per_page => 10, :page => params[:page])
+      @contracts = Contract.where('status_id = ?',@status_id).order(:publication_date)
     end
     respond_to do |format|
-      format.html
+      format.html{
+        @contracts = @contracts.paginate(:per_page => 10, :page => params[:page])    
+
+      }
       #format.csv { send_data @products.to_csv } #
-      format.xls
+      format.xls { }
     end
   end
 
