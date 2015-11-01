@@ -37,6 +37,13 @@ class ContractsController < ApplicationController
         @contracts= @contracts.where('upper(description) like ?',"%"+params[:objeto].upcase+ "%")
       end
 
+
+      if params[:motive] and params[:motive][:id] != ""
+        @motive_id = params[:motive][:id]
+        @contracts= @contracts.where('motive_id = ?', @motive_id)
+      end
+
+
       @contracts = @contracts.order(:publication_date).paginate(:per_page => 10, :page => params[:page])    
     else
       @status_id = 11

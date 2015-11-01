@@ -36,6 +36,9 @@ gem 'money-rails'
 
 gem 'rails-jquery-autocomplete'
 
+
+gem "rails-erd"
+
 group :development do
     gem 'capistrano'
 	gem  'rvm-capistrano',  require: false

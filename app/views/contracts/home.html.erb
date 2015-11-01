@@ -130,7 +130,7 @@
 				  </div>
 		  		  <div class="form-group">
 					<%=  
-				    	collection_select(:motive, :id, Motive.all, :id, :name, {:include_blank => 'TODOS LOS MOTIVOS'}, {:class=> "form-control input-lg"})
+				    	collection_select(:motive, :id, Motive.all, :id, :name, {prompt: 'TODOS LOS MOTIVOS'}, {:class=> "form-control input-lg"})
 				    %>
 				  </div>
 		  		  <div class="form-group">
