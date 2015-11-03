@@ -306,7 +306,6 @@ svg .axis, svg .tick, svg .grid, svg rect {
 }
 
 *+html .filter-links a {  background: #eeeeee; } /** IE7 hack **/
-.filter-links a { background: #eeeeee\0/; }  /** IE8 hack **/
 
 
 .filter-links a.active {
