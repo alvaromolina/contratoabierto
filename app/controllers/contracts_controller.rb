@@ -3,8 +3,13 @@ class ContractsController < ApplicationController
   autocomplete :entity, :name, :full => true
 
 
-  def subscriptions
 
+  def news
+    
+  end
+
+
+  def subscriptions
 
   end
 
@@ -58,7 +63,11 @@ class ContractsController < ApplicationController
 
       }
       #format.csv { send_data @products.to_csv } #
-      format.xls { }
+      format.xls { 
+
+
+
+      }
     end
   end
 

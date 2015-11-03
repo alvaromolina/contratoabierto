@@ -29,8 +29,24 @@
     <![endif]-->
     
 
+
+
   <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
+
+
+  <script type="text/javascript" charset="utf-8">
+  window.__locale = 'es-ES';
+  </script>
+  
+  <%= javascript_include_tag "globalize.min" %>
+  <%= javascript_include_tag "globalize.culture.es-ES" %>
+
   <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+
+  <script type="text/javascript" charset="utf-8" src="//datawrapper.dwcdn.net/assets/vendor/raphael-js/2.1.2/raphael-min.js"></script>
+  <script type="text/javascript" charset="utf-8" src="//datawrapper.dwcdn.net/assets/vendor/chroma-js/0.5.4/chroma.min.js"></script>
+  <script type="text/javascript" charset="utf-8" src="//datawrapper.dwcdn.net/assets/vendor/d3-light/3.1.8/d3-light.min.js"></script>
+
   <%= csrf_meta_tags %>
 </head>
 <body>
@@ -51,9 +67,12 @@
         <div class="navbar-collapse collapse navbar-right">
           <ul class="nav navbar-nav">
             <li><a href="/subscriptions">SUSCRIBIRSE</a></li>
-            <li><a href="/data">DATOS</a></li>
+            <li><a href="/news">INVESTIGACIÓN</a></li>
+            <!--<li><a href="/data">DATOS</a></li>-->
             <li><a href="/mobile">APP MOVIL</a></li>
+            <!--
             <li><a href="http://contratoabierto.tumblr.com" target="_blank">NOTICIAS</a></li>
+            -->
             <li><a href="/about">ACERCA</a></li>
           </ul>
         </div><!--/.nav-collapse -->
