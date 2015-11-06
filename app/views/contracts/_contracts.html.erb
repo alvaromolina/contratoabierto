@@ -20,7 +20,9 @@
 					Fecha publicación: <b><%= contract.publication_date %></b></small></h2></li>
 				<li><h2><small><i class="glyphicon glyphicon-home"></i>Entidad publicación: <br><b class="text-info"><%= contract.entity.name %></b></h2></small></li>
 				<li><h2><small><i class="glyphicon glyphicon-asterisk"></i>
-				Estado: <b><%= contract.status.name %></b></small></h2></li>
+				Estado: <b> <%= contract.status.name %></b></small></h2></li>
+				<li><h2><small><i class="glyphicon glyphicon-usd"></i>
+				Monto especificado: <b> <%= contract.specified_amount %></b></small></h2></li>
 			</ul>
 		</div>
 		<div class="col-xs-12 col-sm-12 col-md-8 excerpet">

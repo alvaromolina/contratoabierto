@@ -7,7 +7,17 @@ class ContractsController < ApplicationController
   def news
     
   end
+  def news1
+    
+  end
 
+  def news2
+    
+  end
+
+  def news3
+    
+  end
 
   def subscriptions
 
@@ -21,6 +31,8 @@ class ContractsController < ApplicationController
     @excel_path = "/home.xls"
     @motive_id = nil
     @status_id = 11
+    @start_date = nil
+    @end_date = nil
 
     if params[:objeto]
       second = request.fullpath.split("?")[1]
@@ -51,6 +63,21 @@ class ContractsController < ApplicationController
       end
 
 
+      if params[:motive] and params[:motive][:id] != ""
+        @motive_id = params[:motive][:id]
+        @contracts= @contracts.where('motive_id = ?', @motive_id)
+      end
+
+
+      if params[:start_date] and params[:start_date] != "" and params[:end_date] != ""
+        @start_date = Date.strptime(params[:start_date], '%Y-%m-%d')
+        @end_date = Date.strptime(params[:end_date], '%Y-%m-%d')
+
+        @contracts= @contracts.where(:publication_date => @start_date..@end_date)
+
+        @start_date = @start_date.strftime('%Y-%m-%d')
+        @end_date = @end_date.strftime('%Y-%m-%d')
+      end
       @contracts = @contracts.order(:publication_date)
     else
       @status_id = 11

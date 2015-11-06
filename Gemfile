@@ -38,6 +38,7 @@ gem 'rails-jquery-autocomplete'
 
 
 gem "rails-erd"
+gem 'tagsinput-rails'
 
 group :development do
     gem 'capistrano'

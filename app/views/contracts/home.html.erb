@@ -27,11 +27,10 @@
 			<%= image_tag "doblecarretera.jpg" %>
 		</div>
     </div>
-
     <div class="item">
  		<div class="carousel-caption" style="text-align: right;">
-			<h1 style="font-family: 'Open Sans'; font-size: 40px;">Este buscador te ayudar&aacute; a encontrar las  convocatorias, costo, empresas, y la modalidad de las contrataciones publicas</h1>
-			<h3 style="font-family: 'Open Sans'; font-size: 20px;">O recibe notificaciones en tu mail:</h3><a href="/subscriptions" class="btn btn-lg btn-primary">Suscribirse</a>
+			<h1 style="font-family: 'Open Sans'; font-size: 40px;">Suscribite a las publicaciones que te interesen.</h1>
+			<a style="color: white;" href="/subscriptions" class="btn btn-lg btn-warning">Suscribirse</a>
 			<br>
 			<br>
 			<br>
@@ -46,7 +45,7 @@
     <div class="item">
 		<div class="carousel-caption">
 
-			<h1 style="font-family: 'Open Sans'; font-size: 45px;">Explora los datos y participa en el control social
+			<h1 style="font-family: 'Open Sans'; font-size: 45px;">
 			<br>
 			</h1>
 			<br>
@@ -93,7 +92,7 @@
 			<div class="row">
 				<div class="col-lg-8 col-lg-offset-2">
 					  <div class="form-group">
-						    <input type="text" size="75" class="form-control input-lg" name="objeto" id="objeto" value="<%= @objeto %>" placeholder="Objeto Contrato">
+						    <input type="text" size="75" class="form-control input-lg" name="objeto" id="objeto" value="<%= @objeto %>" placeholder="Palabras clave">
 					  </div>
 					  <div class="form-group">
 					  	<%= autocomplete_field_tag 'entity', @entity? @entity.name : '', autocomplete_entity_name_contracts_path, {:class=> "form-control input-lg", :size => 75, :placeholder => "Entidad", :id => "entidad", 'data-auto-focus' => true} %>
@@ -108,24 +107,17 @@
 					    	%>
 					    	</div>
 					  </div>
-					  <button type="submit" class="col-sm-12 btn btn-lg btn-theme btn-default">Buscar</button>
-					  <a  style="color: white; " id="advanced">Mostrar busqueda avanzada</a>
-					  <br><br>
+
 					  <div id="advanced_form" style="display: none;"> 
 					  <div class="form-group">
-							<%=  
-					    	collection_select(:region, :id, Region.all.order(:name), :id, :name, {:include_blank => 'TODOS'}, {:class=> "form-control input-lg"})
-					    	%>
+						    <input type="date" name="start_date" class="form-control input-lg" value="<%= @start_date %>" placeholder="Fecha Inicio:">
 					  </div>
 					  <div class="form-group">
-						    <input type="date" class="form-control input-lg" id="objeto" placeholder="Fecha Inicio:">
-					  </div>
-					  <div class="form-group">
-					     <input type="date" class="form-control input-lg" id="objeto" placeholder="Fecha Fin:">
+					     <input type="date"  name="end_date"  class="form-control input-lg" value="<%= @end_date %>"  placeholder="Fecha Fin:">
 					  </div>
 				  <div class="form-group">
 					<%=  
-				    	collection_select(:region, :id, Region.all.order(:name), :id, :name, {:include_blank => 'TODOS LOS DEPARTAMENTOS'}, {:class=> "form-control input-lg"})
+				    	collection_select(:region, :id, Region.all.order(:name), :id, :name, {:include_blank => 'TODOS LOS DEPARTAMENTOS', :selected => @region_id }, {:class=> "form-control input-lg"})
 				    %>
 				  </div>
 		  		  <div class="form-group">
@@ -133,22 +125,29 @@
 				    	collection_select(:motive, :id, Motive.all.order(:name), :id, :name,  {prompt: 'TODOS LOS MOTIVOS', :selected => @motive_id }, {:class=> "form-control input-lg"})
 				    %>
 				  </div>
+				  <!--
 		  		  <div class="form-group">
 					<%=  
 				    	collection_select(:mode, :id, Mode.all.order(:name), :id, :name, {:include_blank => 'TODOS LOS MODOS'}, {:class=> "form-control input-lg"})
 				    %>
 				  </div>
+				  -->
 		  		  <div class="form-group">
 					<%=  
-				    	collection_select(:budget_item, :id, BudgetItem.all.order(:name), :id, :name, {:include_blank => 'TODOS LOS ITEMS'}, {:class=> "form-control input-lg"})
+				    	collection_select(:budget_item, :id, BudgetItem.all.order(:name), :id, :name, {:include_blank => 'TODOS LOS ITEMS', :selected => @budget_item}, {:class=> "form-control input-lg"})
 				    %>
 				  </div>
+				  <!--
 		  		  <div class="form-group">
 					<%=  
 				    	collection_select(:selection_method, :id, SelectionMethod.all.order(:name), :id, :name, {:include_blank => 'TODOS LOS TIPOS DE SELECCION'}, {:class=> "form-control input-lg"})
 				    %>
 				  </div>
+					-->
 				</div>
+					<a  style="color: white; " id="advanced">Mostrar busqueda avanzada</a>
+					  <br><br>			
+					  <button type="submit" class="col-sm-12 btn btn-lg btn-theme btn-default">Buscar</button>
 			</div>
 			</form>	
 			</div><!-- /row -->

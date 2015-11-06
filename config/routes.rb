@@ -9,6 +9,9 @@ Contratoabierto::Application.routes.draw do
   get '/data' => 'contracts#data'
   get '/home' => 'contracts#home'
   get '/news' => 'contracts#news'
+  get '/news1' => 'contracts#news1'
+  get '/news2' => 'contracts#news2'
+  get '/news3' => 'contracts#news3'
 
   get '/mobile' => 'contracts#mobile'
   get '/subscriptions' => 'contracts#subscriptions'
