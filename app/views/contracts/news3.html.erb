@@ -1,0 +1,98 @@
+  
+
+  <!-- *****************************************************************************************************************
+   BLUE WRAP
+   ***************************************************************************************************************** -->
+  <div id="blue">
+      <div class="container">
+      <div class="row">
+        <h3></h3>
+      </div><!-- /row -->
+      </div> <!-- /container -->
+  </div><!-- /blue -->
+
+   
+  <!-- *****************************************************************************************************************
+   BLOG CONTENT
+   ***************************************************************************************************************** -->
+
+   <div class="container mtb">
+    <div class="row">
+    
+      <! -- SINGLE POST -->
+      <div class="col-lg-8">
+        <! -- Blog Post 1 -->
+
+        <a href="/news2"><h2 class="ctitle">Venderlas es difícil</h2></a>
+        
+        <p> <%= image_tag "teleferico.jpg", :class => "img-responsive" %>
+</p>
+
+        <p><csmall> Noviembre 11, 2015.</csmall> | <csmall2>Contrato Abierto</csmall2></p>
+        <div class="row">
+
+
+          <p>Los contratos más despreciados son los de los municipios más alejados.</p>
+          <p>
+Nadie los quiere. En el occidente del país están las obras y compras más despreciadas por las empresas privadas. Sus convocatorias públicas tienen mínimos márgenes de diferencia con los contratos que se quedan desiertos.</p>
+<p>
+Municipios como el de Acasio, Sabaya, Corque, Cruz de Machacamarca, Mojinete, Chipaya que están en los departamentos de La Paz, Potosí y Oruro encabezan la lista de la administración pública que se queda sin interesados en los recursos públicos. Una de las respuestas a este patrón es su lejanía. A pesar de que son municipios que publican un bajo número de convocatorias estas quedan en nada por la falta de proponentes.</p>
+<p>
+El municipio de Acasio es el que más contratos desiertos tiene en el Sistema de Contrataciones Estatales (Sicoes), el 85% de las convocatorias están desiertas del 2010 a la fecha.  A pesar de que el municipio tiene una población de más de 5 mil habitantes en los últimos cinco años solamente ha pagado por cinco contratos.
+El otro extremo pone a la empresa estatal Boliviana de Aviación con 0% de contratos desiertos. Con seis años de vida la estatal ha hecho 2.655 convocatorias que siempre han tenido a alguien detrás en tratar de ganar el dinero que estas ofrecen, aunque la misma ha sido cuestiona incluso con hacer invitaciones directas en algunas contrataciones pese a que la ley se lo impide.
+</p>
+
+      <div style="text-align: center;">
+      <a href="#" id="pop">
+          <%= image_tag "info2.png", :id => "imageresource" %>
+                    <br>
+
+          Click para agrandar
+      </a>
+      </div>
+
+<!-- Creates the bootstrap modal where the image will appear -->
+      <div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+              <h4 class="modal-title" id="myModalLabel"></h4>
+            </div>
+            <div class="modal-body" style="text-align: center;">
+              <img src="" id="imagepreview" style=" height: 1200px;" >
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+        </div><!--/row -->
+      <div class="spacing"></div>
+              <h6>Compartir:</h6>
+      <p class="share">
+        <a href="#"><i class="fa fa-twitter"></i></a>
+        <a href="#"><i class="fa fa-facebook"></i></a>
+        <a href="#"><i class="fa fa-tumblr"></i></a>
+        <a href="#"><i class="fa fa-google-plus"></i></a>       
+      </p>
+        
+      </div><!--/col-lg-8 -->
+      
+      <%= render 'sidebar' %>
+
+
+      </div>
+   </div><!--/container -->
+<script>
+  
+  $("#pop").on("click", function() {
+   $('#imagepreview').attr('src', $('#imageresource').attr('src')); // here asign the image to the modal when the user click the enlarge link
+   $('#imagemodal').modal('show'); // imagemodal is the id attribute assigned to the bootstrap modal, then i use the show function
+});
+</script>
+
+

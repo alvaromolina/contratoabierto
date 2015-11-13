@@ -40,7 +40,30 @@ Otro sector en el que los contratos ofrecen millonarios montos de dinero es en l
 “Mi Teleférico” , el transporte público se ha convertido en la contratación más cara de un servicio en el país, tomando en cuenta que tuvo dos fases, una primera que costó 2.888’400.000 bolivianos y una segunda que le demandó al Gobierno 1.453’343881 bolivianos.
 </p>
 
-        <%= image_tag "info1.png", :class => "img-responsive" %>
+      <div style="text-align: center;">
+      <a href="#" id="pop">
+          <%= image_tag "info1.png", :id => "imageresource" %>
+          Click para agrandar
+      </a>
+      </div>
+
+<!-- Creates the bootstrap modal where the image will appear -->
+      <div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+              <h4 class="modal-title" id="myModalLabel">Image preview</h4>
+            </div>
+            <div class="modal-body" style="text-align: center;">
+              <img src="" id="imagepreview" style=" height: 1000px;" >
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
         </div><!--/row -->
         <div class="spacing"></div>
