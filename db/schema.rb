@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150810072007) do
+ActiveRecord::Schema.define(version: 20160121203253) do
 
   create_table "applying_companies", force: true do |t|
     t.integer  "contract_id"
@@ -100,6 +100,8 @@ ActiveRecord::Schema.define(version: 20150810072007) do
     t.string   "contract_number"
     t.datetime "contract_date"
     t.decimal  "contract_amount"
+    t.string   "currency"
+    t.decimal  "exchange"
   end
 
   add_index "contracted_companies", ["company_id"], name: "index_contracted_companies_on_company_id", using: :btree

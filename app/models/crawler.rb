@@ -435,6 +435,8 @@ and contracts.status_id = 1)
 	end
 
 
+
+
 	def self.crawl_forms400(init_range, end_range)
 		restantes = 1
 		cont = 0
@@ -495,7 +497,7 @@ and contracts.status_id = 1)
 				contract_form.process_status = "GET"
 				contract_form.save
 				#Empresas
-				trs = tables[3].css('tr')
+				trs = tables[5].css('tr')
 				cont  = 0
 				length_trs = trs.count
 
@@ -523,7 +525,242 @@ and contracts.status_id = 1)
 
 
 				#Sociedades Accidentales
-				trs = tables[4].css('tr');
+				trs = tables[6].css('tr');
+				cont  = 0
+				length_trs = trs.count
+				trs.each do |tr|
+					if cont > 2
+						tds = tr.css('td')
+						if (tds.count >= 3) and tds[1].text.upcase.strip != ""
+							company = Company.where(
+								name: tds[1].text.upcase.strip, 
+								company_type: "SOCIEDAD ACCIDENTAL",
+								#company_origin: tds[1].text.upcase.strip,
+								#document_type: tds[2].text.upcase.strip,
+								#document_number: tds[3].text.upcase.strip,
+								).first_or_create
+							ContractedCompany.where(
+									company_id: company.id,
+									contract_id: c.id
+							).first_or_create
+						end
+					end
+					cont = cont + 1
+				end
+
+				contract_form.process_status = "MON"
+				contract_form.save
+
+				#Moneda del contrato
+				trs = tables[7].css('tr');
+				length_trs = trs.count
+
+				currency = nil
+				exchange = 1
+
+
+				if length_trs > 1
+					tds = trs[1].css('td')
+					currency =  tds[1].text.strip.upcase
+					exchange =  tds[3].text.strip.gsub(",",".").to_d
+				end		
+
+
+				contract_form.process_status = "CON"
+				contract_form.save
+
+				#Costo del contrato
+				trs = tables[8].css('tr');
+				length_trs = trs.count
+
+				puts trs
+
+				if length_trs > 1
+					#tr = trs[1]
+					cont  = 0
+					trs.each do |tr|
+						if cont > 0
+							tds = tr.css('td')
+
+
+							if tds.count == 6
+								#puts tds
+								contracted_company = ContractedCompany.joins(:company).where("contracted_companies.contract_id = ? and companies.name like ?", c.id, tds[0].text.upcase.strip+"%").readonly(false).first
+								if contracted_company
+									contracted_company.contract_number =  tds[1].text.strip
+									contracted_company.contract_date = tds[2].text.strip.gsub(nbsp, " ").to_date
+									contracted_company.contract_amount = tds[3].text.strip.gsub(",",".").to_d
+									contracted_company.currency = currency
+									contracted_company.exchange = exchange
+									contracted_company.save
+								end
+							else
+								#puts tds
+								contracted_company = ContractedCompany.joins(:company).where("contracted_companies.contract_id = ? and companies.name like ?", c.id, tds[0].text.upcase.strip+"%").readonly(false).first
+								if contracted_company
+									contracted_company.contract_number =  tds[2].text.strip
+									contracted_company.contract_date = tds[3].text.strip.gsub(nbsp, " ").to_date
+									contracted_company.contract_amount = tds[4].text.strip.gsub(",",".").to_d
+									contracted_company.currency = currency
+									contracted_company.exchange = exchange
+									contracted_company.save
+								end
+							end								
+
+						end
+						cont = cont + 1
+					end
+				end
+
+				contract_form.process_status = "COS"
+				contract_form.save
+
+				#Items
+				trs = tables[10].css('tr');
+				length_trs = trs.count
+				if length_trs > 1
+
+					cont  = 0
+					trs.each do |tr|
+						if cont > 0
+							tds = tr.css('td')
+							#puts tds
+
+							if (tds.count > 3)
+
+
+								if tds.count  == 9
+
+									budget_item = BudgetItem.where(item_number: tds[1].text.strip).first_or_create
+
+									ContractBudgetItem.where(
+										contract_id: c.id,
+										budget_item_id: budget_item.id,
+										description: tds[2].text.upcase.strip,
+										contract_number: tds[3].text.strip,
+										unit_price: tds[4].text.strip.gsub(",",".").to_d,
+										quantity_type: tds[5].text.upcase.strip,
+										quantity: tds[6].text.strip.gsub(",",".").to_d,
+										total: tds[7].text.strip.gsub(",",".").to_d,
+										origin: tds[8].text.upcase.strip
+									).first_or_create
+								elsif tds.count  == 11
+
+									budget_item = BudgetItem.where(item_number: tds[2].text.strip).first_or_create
+
+									ContractBudgetItem.where(
+										contract_id: c.id,
+										budget_item_id: budget_item.id,
+										description: tds[3].text.upcase.strip,
+										contract_number: tds[4].text.strip,
+										unit_price: tds[6].text.strip.gsub(",",".").to_d,
+										quantity_type: tds[7].text.upcase.strip,
+										quantity: tds[8].text.strip.gsub(",",".").to_d,
+										total: tds[9].text.strip.gsub(",",".").to_d,
+										origin: tds[10].text.upcase.strip
+									).first_or_create
+								else
+									raise "Error item no definido"
+								end
+							end
+						end
+						cont = cont + 1
+					end
+				end
+
+				contract_form.process_status = "ITEM"
+				contract_form.save
+
+				#tipo de contrato
+				trs = tables[2].css('tr');
+
+				motive = Motive.where(name: trs[2].css('td')[0].text.upcase.strip).first_or_create
+				c.motive_id = motive.id
+
+				contract_type = ContractType.where(name: trs[2].css('td')[1].text.upcase.strip).first_or_create
+				c.contract_type_id = contract_type.id
+				c.save
+
+				contract_form.process_status = "OK"
+				contract_form.save
+
+			end
+		end
+
+		return restantes
+
+	end
+
+
+
+	def self.crawl_forms400_proc1
+
+			a = Mechanize.new { |agent|
+				agent.user_agent_alias = 'Mac Safari'
+				#agent.set_proxy(proxy[0], proxy[1])
+			}
+
+
+			nbsp = Nokogiri::HTML("&nbsp;").text
+
+			contract_form = ContractForm.where(name: 'FORM 400').first
+
+			contract_form.process_status = "INI"
+			contract_form.save
+
+			c = Contract.find(contract_form.contract_id)
+
+
+			headers = {"Accept"=>"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8", 
+					"Cache-Control"	=> "max-age=0",
+					"User-Agent" =>	"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/600.5.17 (KHTML, like Gecko) Version/8.0.5 Safari/600.5.17"}
+
+			
+			#link = contract_form.link
+
+			link = '/repform/form400a-2.php?cp=15-0047-01-601088-0-E&cf=1628610'
+			#link = '/repform/form400a-2.php?cp=10-0578-00-230117-0-E&cf=576987'
+
+			a.pre_connect_hooks << Proc.new { sleep 0.1 }
+			a.get('https://www.sicoes.gob.bo/'+link, nil, nil,headers) do |page|
+				tables = page.parser.xpath('/html/body/table')
+				
+
+				contract_form.process_status = "GET"
+				contract_form.save
+				#Empresas
+				trs = tables[5].css('tr')
+				cont  = 0
+				length_trs = trs.count
+
+				puts "Empresas"
+
+				trs.each do |tr|
+					#puts cont
+					#puts tr
+					if cont > 2
+						tds = tr.css('td')
+						if (tds.count >= 3) and tds[4].text.upcase.strip != ""
+							company = Company.where(
+								name: tds[4].text.upcase.strip, 
+								company_type: "EMPRESA",
+								company_origin: tds[1].text.upcase.strip,
+								document_type: tds[2].text.upcase.strip,
+								document_number: tds[3].text.upcase.strip,
+								).first_or_create
+							ContractedCompany.where(
+									company_id: company.id,
+									contract_id: c.id
+							).first_or_create
+						end
+					end
+					cont = cont + 1
+				end
+
+				puts "Empresas Accidentales"
+
+				#Sociedades Accidentales
+				trs = tables[6].css('tr');
 				cont  = 0
 				length_trs = trs.count
 				trs.each do |tr|
@@ -547,14 +784,31 @@ and contracts.status_id = 1)
 				end
 
 
+				contract_form.process_status = "MON"
+				contract_form.save
+
+				#Moneda del contrato
+				trs = tables[7].css('tr');
+				length_trs = trs.count
+
+				currency = nil
+				exchange = 1
+
+
+				if length_trs > 1
+					tds = trs[1].css('td')
+					currency =  tds[1].text.strip.upcase
+					exchange =  tds[3].text.strip.gsub(",",".").to_d
+				end		
+
+
 				contract_form.process_status = "CON"
 				contract_form.save
 
 				#Costo del contrato
-				trs = tables[6].css('tr');
+				trs = tables[8].css('tr');
 				length_trs = trs.count
 
-				puts trs
 				
 				if length_trs > 1
 					#tr = trs[1]
@@ -571,6 +825,8 @@ and contracts.status_id = 1)
 									contracted_company.contract_number =  tds[1].text.strip
 									contracted_company.contract_date = tds[2].text.strip.gsub(nbsp, " ").to_date
 									contracted_company.contract_amount = tds[3].text.strip.gsub(",",".").to_d
+									contracted_company.currency = currency
+									contracted_company.exchange = exchange
 									contracted_company.save
 								end
 							else
@@ -580,6 +836,8 @@ and contracts.status_id = 1)
 									contracted_company.contract_number =  tds[2].text.strip
 									contracted_company.contract_date = tds[3].text.strip.gsub(nbsp, " ").to_date
 									contracted_company.contract_amount = tds[4].text.strip.gsub(",",".").to_d
+									contracted_company.currency = currency
+									contracted_company.exchange = exchange
 									contracted_company.save
 								end
 							end								
@@ -592,8 +850,10 @@ and contracts.status_id = 1)
 				contract_form.process_status = "COS"
 				contract_form.save
 
+
+
 				#Items
-				trs = tables[8].css('tr');
+				trs = tables[10].css('tr');
 				length_trs = trs.count
 				if length_trs > 1
 
@@ -601,7 +861,6 @@ and contracts.status_id = 1)
 					trs.each do |tr|
 						if cont > 0
 							tds = tr.css('td')
-							#puts tds
 
 							if (tds.count > 3)
 								budget_item = BudgetItem.where(item_number: tds[1].text.strip).first_or_create
@@ -640,12 +899,10 @@ and contracts.status_id = 1)
 				contract_form.save
 
 			end
-		end
 
-		return restantes
+		return 0
 
 	end
-
 
 	def self.crawl_forms400_b(init_range, end_range)
 		restantes = 1
