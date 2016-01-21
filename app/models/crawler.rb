@@ -554,6 +554,8 @@ and contracts.status_id = 1)
 				trs = tables[6].css('tr');
 				length_trs = trs.count
 
+				puts trs
+				
 				if length_trs > 1
 					#tr = trs[1]
 					cont  = 0
