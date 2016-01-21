@@ -560,14 +560,28 @@ and contracts.status_id = 1)
 					trs.each do |tr|
 						if cont > 0
 							tds = tr.css('td')
-							#puts tds
-							contracted_company = ContractedCompany.joins(:company).where("contracted_companies.contract_id = ? and companies.name like ?", c.id, tds[0].text.upcase.strip+"%").readonly(false).first
-							if contracted_company
-								contracted_company.contract_number =  tds[1].text.strip
-								contracted_company.contract_date = tds[2].text.strip.gsub(nbsp, " ").to_date
-								contracted_company.contract_amount = tds[3].text.strip.gsub(",",".").to_d
-								contracted_company.save
-							end
+
+
+							if tds.count == 6
+								#puts tds
+								contracted_company = ContractedCompany.joins(:company).where("contracted_companies.contract_id = ? and companies.name like ?", c.id, tds[0].text.upcase.strip+"%").readonly(false).first
+								if contracted_company
+									contracted_company.contract_number =  tds[1].text.strip
+									contracted_company.contract_date = tds[2].text.strip.gsub(nbsp, " ").to_date
+									contracted_company.contract_amount = tds[3].text.strip.gsub(",",".").to_d
+									contracted_company.save
+								end
+							else
+								#puts tds
+								contracted_company = ContractedCompany.joins(:company).where("contracted_companies.contract_id = ? and companies.name like ?", c.id, tds[0].text.upcase.strip+"%").readonly(false).first
+								if contracted_company
+									contracted_company.contract_number =  tds[2].text.strip
+									contracted_company.contract_date = tds[3].text.strip.gsub(nbsp, " ").to_date
+									contracted_company.contract_amount = tds[4].text.strip.gsub(",",".").to_d
+									contracted_company.save
+								end
+							end								
+
 						end
 						cont = cont + 1
 					end
