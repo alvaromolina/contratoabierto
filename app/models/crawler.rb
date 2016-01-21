@@ -673,10 +673,10 @@ and contracts.status_id = 1)
 				#tipo de contrato
 				trs = tables[4].css('tr');
 
-				motive = Motive.where(name: trs[2].css('td')[0].text.upcase.strip).first_or_create
+				motive = Motive.where(name: trs[2].css('td')[0].text.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '').upcase.strip).first_or_create
 				c.motive_id = motive.id
 
-				contract_type = ContractType.where(name: trs[2].css('td')[1].text.upcase.strip).first_or_create
+				contract_type = ContractType.where(name: trs[2].css('td')[1].text.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '').upcase.strip).first_or_create
 				c.contract_type_id = contract_type.id
 				c.save
 
@@ -718,7 +718,7 @@ and contracts.status_id = 1)
 			#link = contract_form.link
 
 			link = '/repform/form400a-2.php?cp=15-0047-01-601088-0-E&cf=1628610'
-			link = '/repform/form400a-2.php?cp=14-0025-16-461570-0-E&cf=1251083'
+			link = 'repform/form400a-2.php?cp=10-0578-00-242114-0-E&cf=605867'
 
 			a.pre_connect_hooks << Proc.new { sleep 0.1 }
 			a.get('https://www.sicoes.gob.bo/'+link, nil, nil,headers) do |page|
@@ -912,10 +912,10 @@ and contracts.status_id = 1)
 				trs = tables[4].css('tr');
 				puts tables[4]
 
-				motive = Motive.where(name: trs[2].css('td')[0].text.upcase.strip).first_or_create
+				motive = Motive.where(name: trs[2].css('td')[0].text.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '').upcase.strip).first_or_create
 				c.motive_id = motive.id
 
-				contract_type = ContractType.where(name: trs[2].css('td')[1].text.upcase.strip).first_or_create
+				contract_type = ContractType.where(name: trs[2].css('td')[1].text.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '').upcase.strip).first_or_create
 				c.contract_type_id = contract_type.id
 				c.save
 
