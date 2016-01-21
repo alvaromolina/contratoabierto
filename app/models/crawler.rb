@@ -508,7 +508,7 @@ and contracts.status_id = 1)
 						tds = tr.css('td')
 						if (tds.count >= 3) and tds[4].text.upcase.strip != ""
 							company = Company.where(
-								name: tds[4].text.upcase.strip, 
+								name: tds[4].text.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '').upcase.strip, 
 								company_type: "EMPRESA",
 								company_origin: tds[1].text.upcase.strip,
 								document_type: tds[2].text.upcase.strip,
@@ -533,7 +533,7 @@ and contracts.status_id = 1)
 						tds = tr.css('td')
 						if (tds.count >= 3) and tds[1].text.upcase.strip != ""
 							company = Company.where(
-								name: tds[1].text.upcase.strip, 
+								name: tds[1].text.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '').upcase.strip, 
 								company_type: "SOCIEDAD ACCIDENTAL",
 								#company_origin: tds[1].text.upcase.strip,
 								#document_type: tds[2].text.upcase.strip,
@@ -586,7 +586,7 @@ and contracts.status_id = 1)
 								#puts tds
 								contracted_company = ContractedCompany.joins(:company).where("contracted_companies.contract_id = ? and companies.name like ?", c.id, tds[0].text.upcase.strip+"%").readonly(false).first
 								if contracted_company
-									contracted_company.contract_number =  tds[1].text.strip
+									contracted_company.contract_number =  tds[1].text.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '').strip
 									contracted_company.contract_date = tds[2].text.strip.gsub(nbsp, " ").to_date
 									contracted_company.contract_amount = tds[3].text.strip.gsub(",",".").to_d
 									contracted_company.currency = currency
@@ -597,7 +597,7 @@ and contracts.status_id = 1)
 								#puts tds
 								contracted_company = ContractedCompany.joins(:company).where("contracted_companies.contract_id = ? and companies.name like ?", c.id, tds[0].text.upcase.strip+"%").readonly(false).first
 								if contracted_company
-									contracted_company.contract_number =  tds[2].text.strip
+									contracted_company.contract_number =  tds[2].text.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '').strip
 									contracted_company.contract_date = tds[3].text.strip.gsub(nbsp, " ").to_date
 									contracted_company.contract_amount = tds[4].text.strip.gsub(",",".").to_d
 									contracted_company.currency = currency
@@ -635,8 +635,8 @@ and contracts.status_id = 1)
 									ContractBudgetItem.where(
 										contract_id: c.id,
 										budget_item_id: budget_item.id,
-										description: tds[2].text.upcase.strip,
-										contract_number: tds[3].text.strip,
+										description: tds[2].text.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '').upcase.strip,
+										contract_number: tds[3].text.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '').strip,
 										unit_price: tds[4].text.strip.gsub(",",".").to_d,
 										quantity_type: tds[5].text.upcase.strip,
 										quantity: tds[6].text.strip.gsub(",",".").to_d,
@@ -650,8 +650,8 @@ and contracts.status_id = 1)
 									ContractBudgetItem.where(
 										contract_id: c.id,
 										budget_item_id: budget_item.id,
-										description: tds[3].text.upcase.strip,
-										contract_number: tds[4].text.strip,
+										description: tds[3].text.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '').upcase.strip,
+										contract_number: tds[4].text.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '').strip,
 										unit_price: tds[6].text.strip.gsub(",",".").to_d,
 										quantity_type: tds[7].text.upcase.strip,
 										quantity: tds[8].text.strip.gsub(",",".").to_d,
@@ -671,7 +671,7 @@ and contracts.status_id = 1)
 				contract_form.save
 
 				#tipo de contrato
-				trs = tables[2].css('tr');
+				trs = tables[4].css('tr');
 
 				motive = Motive.where(name: trs[2].css('td')[0].text.upcase.strip).first_or_create
 				c.motive_id = motive.id
@@ -718,7 +718,7 @@ and contracts.status_id = 1)
 			#link = contract_form.link
 
 			link = '/repform/form400a-2.php?cp=15-0047-01-601088-0-E&cf=1628610'
-			#link = '/repform/form400a-2.php?cp=10-0578-00-230117-0-E&cf=576987'
+			link = '/repform/form400a-2.php?cp=14-0025-16-461570-0-E&cf=1251083'
 
 			a.pre_connect_hooks << Proc.new { sleep 0.1 }
 			a.get('https://www.sicoes.gob.bo/'+link, nil, nil,headers) do |page|
@@ -741,7 +741,7 @@ and contracts.status_id = 1)
 						tds = tr.css('td')
 						if (tds.count >= 3) and tds[4].text.upcase.strip != ""
 							company = Company.where(
-								name: tds[4].text.upcase.strip, 
+								name: tds[4].text.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '').upcase.strip, 
 								company_type: "EMPRESA",
 								company_origin: tds[1].text.upcase.strip,
 								document_type: tds[2].text.upcase.strip,
@@ -767,7 +767,7 @@ and contracts.status_id = 1)
 						tds = tr.css('td')
 						if (tds.count >= 3) and tds[1].text.upcase.strip != ""
 							company = Company.where(
-								name: tds[1].text.upcase.strip, 
+								name: tds[1].text.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '').upcase.strip, 
 								company_type: "SOCIEDAD ACCIDENTAL",
 								#company_origin: tds[1].text.upcase.strip,
 								#document_type: tds[2].text.upcase.strip,
@@ -821,7 +821,7 @@ and contracts.status_id = 1)
 								#puts tds
 								contracted_company = ContractedCompany.joins(:company).where("contracted_companies.contract_id = ? and companies.name like ?", c.id, tds[0].text.upcase.strip+"%").readonly(false).first
 								if contracted_company
-									contracted_company.contract_number =  tds[1].text.strip
+									contracted_company.contract_number =  tds[1].text.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '').strip
 									contracted_company.contract_date = tds[2].text.strip.gsub(nbsp, " ").to_date
 									contracted_company.contract_amount = tds[3].text.strip.gsub(",",".").to_d
 									contracted_company.currency = currency
@@ -832,7 +832,7 @@ and contracts.status_id = 1)
 								#puts tds
 								contracted_company = ContractedCompany.joins(:company).where("contracted_companies.contract_id = ? and companies.name like ?", c.id, tds[0].text.upcase.strip+"%").readonly(false).first
 								if contracted_company
-									contracted_company.contract_number =  tds[2].text.strip
+									contracted_company.contract_number =  tds[2].text.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '').strip
 									contracted_company.contract_date = tds[3].text.strip.gsub(nbsp, " ").to_date
 									contracted_company.contract_amount = tds[4].text.strip.gsub(",",".").to_d
 									contracted_company.currency = currency
@@ -860,32 +860,57 @@ and contracts.status_id = 1)
 					trs.each do |tr|
 						if cont > 0
 							tds = tr.css('td')
+							#puts tds
 
 							if (tds.count > 3)
-								budget_item = BudgetItem.where(item_number: tds[1].text.strip).first_or_create
 
-								ContractBudgetItem.where(
-									contract_id: c.id,
-									budget_item_id: budget_item.id,
-									description: tds[2].text.upcase.strip,
-									contract_number: tds[3].text.strip,
-									unit_price: tds[4].text.strip.gsub(",",".").to_d,
-									quantity_type: tds[5].text.upcase.strip,
-									quantity: tds[6].text.strip.gsub(",",".").to_d,
-									total: tds[7].text.strip.gsub(",",".").to_d,
-									origin: tds[8].text.upcase.strip
-								).first_or_create
+
+								if tds.count  == 9
+
+									budget_item = BudgetItem.where(item_number: tds[1].text.strip).first_or_create
+
+									ContractBudgetItem.where(
+										contract_id: c.id,
+										budget_item_id: budget_item.id,
+										description: tds[2].text.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '').upcase.strip,
+										contract_number: tds[3].text.strip,
+										unit_price: tds[4].text.strip.gsub(",",".").to_d,
+										quantity_type: tds[5].text.upcase.strip,
+										quantity: tds[6].text.strip.gsub(",",".").to_d,
+										total: tds[7].text.strip.gsub(",",".").to_d,
+										origin: tds[8].text.upcase.strip
+									).first_or_create
+								elsif tds.count  == 11
+
+									budget_item = BudgetItem.where(item_number: tds[2].text.strip).first_or_create
+
+									ContractBudgetItem.where(
+										contract_id: c.id,
+										budget_item_id: budget_item.id,
+										description: tds[3].text.upcase.strip,
+										contract_number: tds[4].text.strip,
+										unit_price: tds[6].text.strip.gsub(",",".").to_d,
+										quantity_type: tds[7].text.upcase.strip,
+										quantity: tds[8].text.strip.gsub(",",".").to_d,
+										total: tds[9].text.strip.gsub(",",".").to_d,
+										origin: tds[10].text.upcase.strip
+									).first_or_create
+								else
+									raise "Error item no definido"
+								end
 							end
 						end
 						cont = cont + 1
 					end
 				end
 
+
 				contract_form.process_status = "ITEM"
 				contract_form.save
 
 				#tipo de contrato
-				trs = tables[2].css('tr');
+				trs = tables[4].css('tr');
+				puts tables[4]
 
 				motive = Motive.where(name: trs[2].css('td')[0].text.upcase.strip).first_or_create
 				c.motive_id = motive.id
