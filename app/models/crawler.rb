@@ -465,7 +465,7 @@ and contracts.status_id = 1)
 		nbsp = Nokogiri::HTML("&nbsp;").text
 
 		contract_forms = ContractForm.where("contract_forms.name = 'FORM 400'
-and contract_forms.id between ? and ?
+and contract_forms.contract_id between ? and ?
 and contract_forms.process_status is null
 and exists (select 1
 from contracts
