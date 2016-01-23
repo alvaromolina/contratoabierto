@@ -36,6 +36,7 @@ gem 'money-rails'
 
 gem 'rails-jquery-autocomplete'
 
+gem 'datagrid'
 
 gem "rails-erd"
 gem 'tagsinput-rails'

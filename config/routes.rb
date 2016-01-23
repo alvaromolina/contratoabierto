@@ -1,6 +1,7 @@
 Contratoabierto::Application.routes.draw do
   
 
+  resources :contract_reports
   resources :motives
 
   resources :contract_budget_items
@@ -12,7 +13,10 @@ Contratoabierto::Application.routes.draw do
   get '/news1' => 'contracts#news1'
   get '/news2' => 'contracts#news2'
   get '/news3' => 'contracts#news3'
+  get '/news4' => 'contracts#news4'
 
+  get '/datos' => 'contracts#datos'
+  
   get '/mobile' => 'contracts#mobile'
   get '/subscriptions' => 'contracts#subscriptions'
 

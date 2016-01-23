@@ -106,6 +106,12 @@ class ContractsController < ApplicationController
 
   end
 
+  def datos
+    @contract_report = ContractReport.new(params[:contract_report]) do |scope|
+      scope.page(params[:page])
+    end
+  end
+
 
   # GET /contracts
   # GET /contracts.json

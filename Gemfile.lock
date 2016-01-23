@@ -41,6 +41,8 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.9.1.1)
+    datagrid (1.4.0)
+      rails (>= 3.2.18)
     domain_name (0.5.23)
       unf (>= 0.0.5, < 1.0.0)
     erubis (2.7.0)
@@ -174,6 +176,7 @@ PLATFORMS
 DEPENDENCIES
   capistrano
   coffee-rails (~> 4.0.0)
+  datagrid
   jbuilder (~> 1.2)
   jquery-rails
   jquery-ui-rails

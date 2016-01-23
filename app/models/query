@@ -6,7 +6,7 @@ c.status_id estado_id,
 (select name from statuses where id = c.status_id) estado,
 c.contracted_amount monto_contratado,
 c.publication_date fecha_publicacion,
-c.presentation_date fecha_presentacion, 
+c.presentation_date fecha_presentacion,
 c.contact contacto,
 c.warranty garantia, c.specification_price precio_especificacion,
 c.aclaration_date fecha_aclaracion, c.granted_date fecha_adj_des,
@@ -26,8 +26,13 @@ limit 1
 (select count(1) from companies cs, contracted_companies cc
 where cc.contract_id = c.id
 and cs.id = cc.company_id
-) numero_companias
-from contracts c;
+) numero_companias,
+(select count(1) from contract_forms cf where cf.contract_id = c.id and name ='FORM 200') form_200,
+(select count(1) from contract_forms cf where cf.contract_id = c.id and name ='FORM 400') form_400,
+(select link from contract_forms cf where cf.contract_id = c.id and name ='FORM 200') form_200_link,
+(select link from contract_forms cf where cf.contract_id = c.id and name ='FORM 400') form_400_link
+
+from contracts c
 
 
 select c.id, c.mode_id modo_id, 
