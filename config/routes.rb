@@ -1,6 +1,7 @@
 Contratoabierto::Application.routes.draw do
   
 
+  resources :contracted_companies
   resources :contract_reports
   resources :motives
 

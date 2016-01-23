@@ -13,14 +13,11 @@ class ContractReportsGrid
 
   filter(:status_id, :enum, :header => "Estado:",  :select => proc { Status.all.order(:name).map {|c| [c.name, c.id] } }, :multiple => true)
 
-
-
-  filter(:origin_id, :string, :header => "CUCE (ID):",) { |value| where("origin_id ilike '#{value}%'") }
+  filter(:origin_id, :string, :header => "Nro:",) { |value| where("origin_id ilike '#{value}%'") }
 
   filter(:entity_id, :enum, :header => "Entidad:", :select => Entity.all.order(:name).map {|c| [c.name, c.id] })
 
-
-  column(:origin_id, :header => "CUCE") do |model|
+  column(:origin_id, :header => "Nro") do |model|
     format(model.origin_id) do |value|
       link_to value, model
     end

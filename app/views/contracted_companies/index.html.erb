@@ -1,0 +1,16 @@
+<div id="blue">
+  <div class="container">
+  <div class="row">
+    <h3 style="float: right;">Contrataciones.</h3>
+  </div><!-- /row -->
+  </div> <!-- /container -->
+</div><!-- /blue -->
+
+
+
+
+<%= datagrid_form_for @grid, :method => :get, :url => contracted_companies_path %>
+
+<%= will_paginate(@grid.assets) %>
+<%= datagrid_table @grid %>
+<%= will_paginate(@grid.assets) %>
