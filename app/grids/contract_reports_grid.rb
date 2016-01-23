@@ -6,19 +6,31 @@ class ContractReportsGrid
     Contract
   end
 
-  filter(:description, :string, :header => "Objeto:")
-  filter(:publication_date, :date, :range => true,  :header => "Fecha publicación:")
-  filter(:status_id, :enum, :header => "Estado:", :select => proc { Status.all.order(:name).map {|c| [c.name, c.id] }}, :multiple => true)
-  filter(:entity_id, :enum, :header => "Entidad:", :select => proc { Entity.all.order(:name).map {|c| [c.name, c.id] }}, :multiple => true)
+
+  filter(:description, :string, :header => "Descripción:",) { |value| where("description ilike '%#{value}%'") }
+
+  filter(:publication_date, :date, :range => true,  :header => "Fecha publicacion:")
+
+  filter(:status_id, :enum, :header => "Estado:",  :select => proc { Status.all.order(:name).map {|c| [c.name, c.id] } }, :multiple => true)
 
 
-  column(:origin_id, :header => "CUCE")
+
+  filter(:origin_id, :string, :header => "CUCE (ID):",) { |value| where("origin_id ilike '#{value}%'") }
+
+  filter(:entity_id, :enum, :header => "Entidad:", :select => Entity.all.order(:name).map {|c| [c.name, c.id] })
+
+
+  column(:origin_id, :header => "CUCE") do |model|
+    format(model.origin_id) do |value|
+      link_to value, model
+    end
+  end
   column(:description, :header => "Objeto")
   column(:entity, :header => "Entidad") do |record|
     record.entity.name
   end
   column(:status, :header => "Estado") do |record|
-    record.entity.name
+    record.status.name
   end
   column(:publication_date, :header => "Fecha publicación") do |model|
     model.created_at.to_date
@@ -27,7 +39,7 @@ class ContractReportsGrid
   column(:region, :header => "Region") do |record|
     record.region.name
   end
-  column(:mode, :header => "Region") do |record|
+  column(:mode, :header => "Modalidad") do |record|
     record.mode.name
   end
 end

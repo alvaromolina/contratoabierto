@@ -14,6 +14,14 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery-ui
+//= require jquery.datepicker
+//= require date
+//= require date-format
 //= require turbolinks
 //= require bootstrap.min
 //= require autocomplete-rails
+Date.format = "yyyy-mm-dd"
+$(document).ready(function() {
+  $('.date_filter').datePicker({startDate: '2010-01-01'});
+  $("#dp-popup").addClass("dp-popup")
+})
