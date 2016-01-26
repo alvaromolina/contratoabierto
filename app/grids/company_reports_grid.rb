@@ -23,7 +23,7 @@ class CompanyReportsGrid
     record.applying_companies.count
   end
 
-  column(:sum, :header => "Monto contratos", :order => "(select sum(local_amount) from contracted_companies where contracted_companies.company_id = companies.id)") do |record|
+  column(:sum, :header => "Monto contratos", :order => "(select coalesce(sum(local_amount),0) from contracted_companies where contracted_companies.company_id = companies.id)") do |record|
     record.contracted_companies.sum(:local_amount)
   end
 

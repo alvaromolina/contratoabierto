@@ -4,6 +4,10 @@ class ContractsController < ApplicationController
 
 
 
+  def sub
+    redirect_to "/",  notice: "Gracias por suscribirse" 
+  end
+
   def news
     
   end

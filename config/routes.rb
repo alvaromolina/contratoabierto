@@ -17,6 +17,8 @@ Contratoabierto::Application.routes.draw do
   get '/news2' => 'contracts#news2'
   get '/news3' => 'contracts#news3'
   get '/news4' => 'contracts#news4'
+  get '/sub' => 'contracts#sub'
+
 
   get '/datos' => 'contracts#datos'
   

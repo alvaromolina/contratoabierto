@@ -17,6 +17,7 @@
 //= require jquery.datepicker
 //= require date
 //= require date-format
+//= require jquery.tagsinput.min
 //= require turbolinks
 //= require bootstrap.min
 //= require autocomplete-rails
