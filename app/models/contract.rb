@@ -6,6 +6,9 @@ class Contract < ActiveRecord::Base
   belongs_to :regulation
   has_many :contract_forms
   has_many :contract_documents
+  has_many :contracted_companies
+  has_many :applying_companies
+  has_many :contract_budget_items
 
   validates :origin_id, uniqueness: true
 

@@ -206,6 +206,123 @@
         <h2>Objeto del proyecto:</h2>
         <p style="font-size: 22px;"><%= @contract.description.camelize %></p>
 
+
+    <% if (@contract.applying_companies.count > 0) %>
+
+
+        <div class="page-header">
+            <h1>Empresas aplicantes</h1>
+        </div>
+
+        <table class="table table-striped">
+            <tr>
+                <th>
+                    Empresa
+                </th>
+                <th>
+                    Tipo
+                </th>
+            </tr>
+            <% @contract.applying_companies.each do |applying_company| %>
+            <tr>
+                <td><%= link_to applying_company.company.name,  applying_company.company  %></td>
+                <td><%= applying_company.company.company_type  %></td>
+            </tr>
+            <% end %>
+        </table>
+
+        <% end %>
+
+
+        <% if (@contract.contracted_companies.count > 0) %>
+
+
+            <div class="page-header">
+                <h1>Empresas contratadas</h1>
+            </div>
+
+            <table class="table table-striped">
+                <tr>
+                    <th>
+                        Empresa
+                    </th>
+                    <th>
+                        Fecha contrato
+                    </th>
+                    <th>
+                        Monto contrato
+                    </th>
+                    <th>
+                        Moneda
+                    </th>
+                    <th>
+                        Cambio moneda
+                    </th>
+                </tr>
+                <% @contract.contracted_companies.each do |contracted_company| %>
+                    
+                <tr>
+                    <td><%= contracted_company.company.name  %></td>
+                    <td><%= contracted_company.contract_date  %></td>
+                    <td><%= contracted_company.contract_amount  %></td>
+                    <td><%= contracted_company.currency  %></td>
+                    <td><%= contracted_company.exchange  %></td>
+                </tr>
+
+
+                <% end %>
+
+            </table>
+
+            <% end %>
+
+        <% if (@contract.contract_budget_items.count > 0) %>
+
+
+            <div class="page-header">
+                <h1>Items contratados</h1>
+            </div>
+
+            <table class="table table-striped">
+                <tr>
+                    <th>
+                        Item
+                    </th>
+                    <th>
+                        Sub-item
+                    </th>
+                    <th>
+                        Precio unidad
+                    </th>
+                    <th>
+                        Medida
+                    </th>
+                    <th>
+                        Cantidad
+                    </th>
+                    <th>
+                        Total Item
+                    </th>
+                    <th>
+                        Origin
+                    </th>
+                </tr>
+                <% @contract.contract_budget_items.each do |contracted_budget_item| %>
+                    <tr>
+                        <td><%= contracted_budget_item.budget_item.name  %></td>
+                        <td><%= contracted_budget_item.description  %></td>
+                        <td><%= contracted_budget_item.unit_price  %></td>
+                        <td><%= contracted_budget_item.quantity_type  %></td>
+                        <td><%= contracted_budget_item.quantity  %></td>
+                        <td><%= contracted_budget_item.total  %></td>
+                        <td><%= contracted_budget_item.origin  %></td>
+                    </tr>
+                <% end %>
+
+            </table>
+
+            <% end %>
+<!--
  <div class="page-header">
         <h1 id="timeline">Cronograma</h1>
     </div>
@@ -260,7 +377,7 @@
 
 
     </ul>
-
+  -->
       </div>
       <div class="col-lg-3">
         <h4>Detalles</h4>

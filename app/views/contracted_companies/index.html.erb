@@ -11,6 +11,12 @@
 
 <%= datagrid_form_for @grid, :method => :get, :url => contracted_companies_path %>
 
+
+	Exportar: 
+<%= link_to image_tag("excel_icon.jpg", :width => 50), request.original_fullpath.gsub('/contracted_companies','/contracted_companies.csv')  %>
+<br>
+
 <%= will_paginate(@grid.assets) %>
+
 <%= datagrid_table @grid %>
 <%= will_paginate(@grid.assets) %>

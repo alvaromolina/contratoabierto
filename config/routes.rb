@@ -1,6 +1,8 @@
 Contratoabierto::Application.routes.draw do
   
 
+  resources :budget_item_reports
+  resources :company_reports
   resources :contracted_companies
   resources :contract_reports
   resources :motives
@@ -38,6 +40,8 @@ Contratoabierto::Application.routes.draw do
   resources :modes
 
   resources :entities
+
+  resources :companies
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

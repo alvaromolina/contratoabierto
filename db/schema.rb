@@ -11,17 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160121203253) do
+ActiveRecord::Schema.define(version: 20160126140710) do
 
   create_table "applying_companies", force: true do |t|
     t.integer  "contract_id"
     t.integer  "company_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "entity_id"
+    t.string   "company_name"
   end
 
   add_index "applying_companies", ["company_id"], name: "index_applying_companies_on_company_id", using: :btree
   add_index "applying_companies", ["contract_id"], name: "index_applying_companies_on_contract_id", using: :btree
+  add_index "applying_companies", ["entity_id"], name: "index_applying_companies_on_entity_id", using: :btree
 
   create_table "awarding_types", force: true do |t|
     t.string   "name"
@@ -102,10 +105,14 @@ ActiveRecord::Schema.define(version: 20160121203253) do
     t.decimal  "contract_amount"
     t.string   "currency"
     t.decimal  "exchange"
+    t.integer  "entity_id"
+    t.decimal  "local_amount"
+    t.string   "company_name"
   end
 
   add_index "contracted_companies", ["company_id"], name: "index_contracted_companies_on_company_id", using: :btree
   add_index "contracted_companies", ["contract_id"], name: "index_contracted_companies_on_contract_id", using: :btree
+  add_index "contracted_companies", ["entity_id"], name: "index_contracted_companies_on_entity_id", using: :btree
 
   create_table "contracts", force: true do |t|
     t.string   "origin_id"

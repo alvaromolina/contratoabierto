@@ -7,13 +7,13 @@ class ContractReportsGrid
   end
 
 
-  filter(:description, :string, :header => "Descripción:",) { |value| where("description ilike '%#{value}%'") }
+  filter(:description, :string, :header => "Descripción:") { |value| where("description ilike '%#{value}%'") }
 
   filter(:publication_date, :date, :range => true,  :header => "Fecha publicacion:")
 
   filter(:status_id, :enum, :header => "Estado:",  :select => proc { Status.all.order(:name).map {|c| [c.name, c.id] } }, :multiple => true)
 
-  filter(:origin_id, :string, :header => "Nro:",) { |value| where("origin_id ilike '#{value}%'") }
+  filter(:origin_id, :string, :header => "Nro:") { |value| where("origin_id ilike '#{value}%'") }
 
   filter(:entity_id, :enum, :header => "Entidad:", :select => Entity.all.order(:name).map {|c| [c.name, c.id] })
 

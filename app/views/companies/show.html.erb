@@ -1,4 +1,96 @@
-<p id="notice"><%= notice %></p>
 
-<%= link_to 'Edit', edit_company_path(@company) %> |
-<%= link_to 'Back', companies_path %>
+  <!-- *****************************************************************************************************************
+   BLUE WRAP
+   ***************************************************************************************************************** -->
+  <div id="blue">
+      <div class="container">
+      <div class="row">
+        <h3 style="float: right;">Detalle empresa</h3>
+      </div><!-- /row -->
+      </div> <!-- /container -->
+  </div><!-- /blue -->
+
+    <!-- *****************************************************************************************************************
+   TITLE & CONTENT
+   ***************************************************************************************************************** -->
+
+   <div class="container">
+    <div class="row">
+      <div class="col-lg-8 ">
+        <h2>Empresa :</h2> <p style="font-size: 22px;"><%= @company.name %></p>
+    <% if (@company.applying_companies.count > 0) %>
+        <div class="page-header">
+            <h1>Contratos a los que aplico</h1>
+        </div>
+
+        <table class="table table-striped">
+            <tr>
+                <th>
+                    Contrato Id
+                </th>
+                <th>
+                    Descripción
+                </th>
+                 <th>
+                    Entidad
+                </th>          
+            </tr>
+            <% @company.applying_companies.each do |applying_company| %>
+            <tr>
+	            <td><%= link_to applying_company.contract.origin_id,  applying_company.contract %></td>
+                <td><%= applying_company.contract.description  %></td>
+                <td><%= applying_company.contract.entity.name  %></td>
+            </tr>
+            <% end %>
+        </table>
+        <% end %>
+
+        <% if (@company.contracted_companies.count > 0) %>
+            <div class="page-header">
+                <h1>Contratos que fue contratadas</h1>
+            </div>
+            <table class="table table-striped">
+                <tr>
+                    <th>
+                        Contrato
+                    </th>
+                    <th>
+                        Descripción
+                    </th>
+                    <th>
+                        Entidad
+                    </th>
+                    <th>
+                        Fecha contrato
+                    </th>
+                    <th>
+                        Monto contrato
+                    </th>
+                    <th>
+                        Moneda
+                    </th>
+                    <th>
+                        Cambio moneda
+                    </th>
+                </tr>
+                <% @company.contracted_companies.each do |contracted_company| %>
+	                <tr>
+	                    <td><%= link_to contracted_company.contract.origin_id,  contracted_company.contract %></td>
+	                    <td><%= contracted_company.contract.description  %></td>
+	                    <td><%= contracted_company.contract.entity.name  %></td>
+	                    <td><%= contracted_company.contract_date  %></td>
+	                    <td><%= contracted_company.contract_amount  %></td>
+	                    <td><%= contracted_company.currency  %></td>
+	                    <td><%= contracted_company.exchange  %></td>
+	                </tr>
+                <% end %>
+
+            </table>
+            <% end %>
+      </div>
+      <div class="col-lg-3">
+        
+      </div>
+      
+    </div><!--/row -->
+   </div><!--/container -->

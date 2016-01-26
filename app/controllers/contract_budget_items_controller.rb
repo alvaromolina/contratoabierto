@@ -19,6 +19,7 @@ class ContractBudgetItemsController < ApplicationController
 
   # GET /contract_budget_items/1/edit
   def edit
+    
   end
 
   # POST /contract_budget_items

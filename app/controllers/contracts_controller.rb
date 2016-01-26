@@ -33,6 +33,9 @@ class ContractsController < ApplicationController
     @status_id = 11
     @start_date = nil
     @end_date = nil
+    @status_id = 11
+    @entity_id = nil
+
 
     if params[:objeto]
       second = request.fullpath.split("?")[1]
@@ -46,10 +49,17 @@ class ContractsController < ApplicationController
         @contracts= @contracts.where('status_id = ?',@status_id)
       end
 
-      if params[:entity] and params[:entity] != ""
-        @entity = Entity.where("name like ?", params[:entity].upcase + "%").first
-        @contracts= @contracts.where('entity_id = ?',@entity.id)
+
+      @entity_id = params[:entity][:id]
+      if params[:entity] and params[:entity][:id] != ""
+
+        @contracts= @contracts.where('entity_id = ?',@entity_id)
       end
+
+      #if params[:entity] and params[:entity] != ""
+      #  @entity = Entity.where("name like ?", params[:entity].upcase + "%").first
+      #  @contracts= @contracts.where('entity_id = ?',@entity.id)
+      #end
 
       if params[:objeto] and params[:objeto] != ""
         @objeto = params[:objeto]

@@ -1,9 +1,9 @@
-class ContractedCompaniesController < ApplicationController
+class CompanyReportsController < ApplicationController
 
   def index
-    @grid = ContractedCompaniesGrid.new(params[:contracted_companies_grid])
+    @grid = CompanyReportsGrid.new(params[:company_reports_grid])
 
- 	respond_to do |f|
+   	respond_to do |f|
 	  f.html do
 	    @grid.scope {|scope| scope.page(params[:page]) }
 	  end
@@ -14,7 +14,6 @@ class ContractedCompaniesController < ApplicationController
 	      filename: "grid-#{Time.now.to_s}.csv"
 	  end
 	end
-
   end
 
 end
