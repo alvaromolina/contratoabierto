@@ -12,15 +12,25 @@ class ContractedCompaniesGrid
   filter(:company_name, :string, :header => "Empresa:") { |value| where("upper(company_name) ilike '%#{value.upcase}%'") }
 
   column(:contract, :header => "Nro") do |record|
-    link_to  record.contract.origin_id, record.contract
+
+    format(record.contract) do |value|
+      link_to value.origin_id, value
+    end
   end
+
   column(:contract_date, :header => "Feha contrato") do |record|
     record.contract_date ? record.contract_date.to_date : ''
   end
 
-  column(:company, :header => "Compañia") do |record|
-    link_to  record.company.name, name
+
+  column(:company, :header => "Nro") do |record|
+
+    format(record.company) do |value|
+      link_to value.name, value
+    end
   end
+
+
 
   column(:company, :header => "Tipo Compañia") do |record|
     record.company.company_type
