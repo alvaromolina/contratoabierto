@@ -15,7 +15,7 @@ class ContractedCompaniesGrid
     record.contract.origin_id
   end
   column(:contract_date, :header => "Feha contrato") do |record|
-    record.contract_date.to_date
+    record.contract_date ? record.contract_date.to_date : ''
   end
 
   column(:company, :header => "Compañia") do |record|
