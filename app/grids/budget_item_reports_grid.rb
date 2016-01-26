@@ -17,9 +17,12 @@ class BudgetItemReportsGrid
     end
   end
   
-  column(:contract_id, :header => "Feha") do |record|
+  column(:contract_id, :header => "Fecha") do |record|
     record.contract.publication_date ? record.contract.publication_date.to_date : ''
   end
+
+
+
 
   column(:contract_id, :header => "Contrato") do |record|
     record.contract.description
@@ -29,6 +32,10 @@ class BudgetItemReportsGrid
   end
   column(:contract_id, :header => "Sub-item") do |record|
     record.description
+  end
+
+  column(:contract_id, :header => "Entidad") do |record|
+    record.contract.entity.name
   end
 
   column(:unit_price, :header => "Precio unidad")
